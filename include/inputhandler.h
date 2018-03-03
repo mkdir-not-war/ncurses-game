@@ -5,11 +5,13 @@
 
 #include "command.h"
 #include "command_move.h"
+#include "actor.h"
+#include "gamemap.h"
 
 class InputHandler {
 public:
 	// get player actor and frame
-	InputHandler(Actor*, Frame*);
+	InputHandler(Actor*, GameMap*);
 	~InputHandler();
 	void handleInput(int);
 

@@ -16,5 +16,30 @@ void GameMap::refresh() {
 
 void GameMap::loadMap() {
 	_mapframe->genPerlin(257);
-	_mapframe->add(*_player);
+	add(*_player);
+}
+
+void GameMap::add(Actor& a) {
+	_mapframe->add(a.symbol(), a.row(), a.col());
+}
+
+void GameMap::erase(Actor& a) {
+	_mapframe->erase(a.row(), a.col());
+}
+
+void GameMap::add(Actor& a, int row, int col) {
+	if ((row>=0 && row<_mapframe->height()) && 
+		(col>=0 && col<_mapframe->width())) {
+		// get actor at <row, col>
+
+		// check if permeable
+		if (false) {
+			return;
+		}
+		else {
+			erase(a);
+			_mapframe->add(a.symbol(), a.row(), a.col());
+			a.moveto(row, col);
+		}
+	}
 }

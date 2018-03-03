@@ -19,7 +19,7 @@ void game_loop(GameMap& map,
 		// process input (block; turn based)
 		ch = getch();
 		if (ch == 'q' || ch == 'Q') return;
-		//input.handleInput(ch);
+		input.handleInput(ch);
 
 		// update game 
 
@@ -53,17 +53,17 @@ int main() {
 		0, 0);
 	Frame output_frame(scr.height(), 
 		scr.width() * output_frame_width_ratio, 
-		0, (scr.width() * game_frame_width_ratio) + 1);
+		1, (scr.width() * game_frame_width_ratio) + 1);
 
 	// Initialize game objects and map /////////////////////
 	// create player actor
 	Actor player('@', game_frame.height()/2, game_frame.width()/2);
 
 	// all handlers
-	InputHandler input(&player, &viewport);
 	TextConsole console(&output_frame);
 	GameMap gamemap(&game_frame, &viewport, &player);
 	gamemap.loadMap();
+	InputHandler input(&player, &gamemap);
 
 	// enter game loop
 	game_loop(gamemap, console, input);

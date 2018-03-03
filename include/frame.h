@@ -3,7 +3,6 @@
 
 #include <ncurses.h>
 
-#include "actor.h"
 #include "perlinnoise.h"
 
 class Frame {
@@ -30,11 +29,6 @@ public:
 	//         2 | 3 
 	// This function is used only for debugging purposes.	
 	void fillwindow();
-
-	// move these to GameMap
-	void add(Actor&);
-	void erase(Actor&);
-	void add(Actor&, int, int);
 	void genPerlin(const unsigned int&);
 
 	void erase(int, int);

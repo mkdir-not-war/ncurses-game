@@ -3,12 +3,12 @@
 
 #include "command.h"
 #include "actor.h"
-#include "frame.h"
+#include "gamemap.h"
 
 class Command_Move : public Command {
 public:
 	// instantiate with move vector <x, y>
-	Command_Move(int, int, Actor*, Frame*);
+	Command_Move(int, int, Actor*, GameMap*);
 	~Command_Move();
 
 	void execute();
@@ -17,7 +17,7 @@ private:
 	int _x;
 	int _y;
 	Actor* _player;
-	Frame* _map;
+	GameMap* _map;
 };
 
 #endif

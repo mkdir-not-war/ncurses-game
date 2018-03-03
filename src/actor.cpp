@@ -1,9 +1,8 @@
 #include "actor.h"
 
-Actor::Actor(char symbol, int row, int col) {
-	_symbol = symbol;
-	_row = row;
-	_col = col;
+Actor::Actor(char symbol, int row, int col, bool permeable) :
+	_symbol(symbol), _row(row), _col(col), _permeable(permeable)
+{
 }
 
 void Actor::moveto(int row, int col) {
@@ -21,5 +20,9 @@ int Actor::col() const {
 
 char Actor::symbol() const {
 	return _symbol;
+}
+
+bool Actor::permeable() const {
+	return _permeable;
 }
 

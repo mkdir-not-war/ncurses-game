@@ -26,28 +26,6 @@ Frame::~Frame() {
 	delwin(_w);
 }
 
-void Frame::add(Actor& a) {
-	mvwaddch(_w, a.row(), a.col(), a.symbol());
-}
-
-void Frame::erase(Actor& a) {
-	mvwaddch(_w, a.row(), a.col(), ' ');
-}
-
-void Frame::add(Actor& a, int row, int col) {
-	if ((row>=0 && row<_height) && (col>=0 && col<_width)) {
-		char target = mvwinch(_w, row, col);
-		if (target == '~' || target == '#' || target == 'S') {
-			return;
-		}
-		else {
-			erase(a);
-			mvwaddch(_w, row, col, a.symbol());
-			a.moveto(row, col);
-		}
-	}
-}
-
 void Frame::erase(int row, int col) {
 	mvwaddch(_w, row, col, ' ');
 }

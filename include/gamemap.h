@@ -2,6 +2,7 @@
 #define GAMEMAP_H_4567789gfdsg
 
 #include "frame.h"
+#include "actor.h"
 
 class GameMap {
 
@@ -11,6 +12,10 @@ public:
 
 	void refresh();
 	void loadMap();
+
+	void add(Actor&);
+	void erase(Actor&);
+	void add(Actor&, int, int);
 
 private:
 	Frame* _viewport;
