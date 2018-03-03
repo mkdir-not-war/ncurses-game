@@ -29,15 +29,20 @@ public:
 	//         -----
 	//         2 | 3 
 	// This function is used only for debugging purposes.	
-	void fill_window();
+	void fillwindow();
 
+	// move these to GameMap
 	void add(Actor&);
 	void erase(Actor&);
 	void add(Actor&, int, int);
-	void center(Actor&);
+	void genPerlin(const unsigned int&);
+
+	void erase(int, int);
+	void add(char, int, int);
+	void add(char*, int, int, int);
+	void center(int, int);
 	void refresh();
 	void move(int, int);
-	void gen_Perlin(const unsigned int&);
 
 	WINDOW* win() const;
 	WINDOW* super() const;

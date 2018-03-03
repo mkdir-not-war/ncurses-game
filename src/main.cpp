@@ -4,29 +4,29 @@
 #include "frame.h"
 #include "screen.h"
 #include "inputhandler.h"
+#include "gamemap.h"
+#include "textconsole.h"
 
-void game_loop(Frame& game_map, Frame& viewport, 
-	Actor& player, int ch) {
+void game_loop(GameMap& map, 
+	TextConsole& console,
+	InputHandler& input) {
 
-	if (ch == 'q' || ch == 'Q') return;
+	map.refresh();
+	console.refresh();
 
-	game_map.add(player);
-	viewport.center(player);
-	viewport.refresh();
-
-	InputHandler input(&player, &viewport);
-
+	int ch;
 	while (1) {
 		// process input (block; turn based)
 		ch = getch();
-		input.handleInput(ch);
+		if (ch == 'q' || ch == 'Q') return;
+		//input.handleInput(ch);
 
 		// update game 
 
 
 		// render game
-		viewport.center(player);
-		viewport.refresh();
+		map.refresh();
+		console.refresh();
 	}
 }
 
@@ -39,24 +39,35 @@ int main() {
 
 	// starting key press
 	int ch = getch();
+	if (ch == 'q' || ch == 'Q') return 0;
 
-	// create initial window
-	Frame game_map(2*scr.height(), 2*scr.width(), 0, 0);
+	// create game map window and output window
+	float game_frame_width_ratio = 0.6;
+	float output_frame_width_ratio = 1.0 - game_frame_width_ratio;
 
-	// create subwindow of game map
-	Frame viewport(game_map, scr.height(), scr.width(), 0, 0);
-
-
+	Frame game_frame(2*scr.height(), 
+		2*scr.width(), 
+		0, 0);
+	Frame viewport(game_frame, scr.height(), 
+		scr.width() * game_frame_width_ratio, 
+		0, 0);
+	Frame output_frame(scr.height(), 
+		scr.width() * output_frame_width_ratio, 
+		0, (scr.width() * game_frame_width_ratio) + 1);
 
 	// Initialize game objects and map /////////////////////
 	// create player actor
-	Actor player('@', game_map.height()/2, game_map.width()/2);
+	Actor player('@', game_frame.height()/2, game_frame.width()/2);
 
-	// make map
-	game_map.gen_Perlin(237);
+	// all handlers
+	InputHandler input(&player, &viewport);
+	TextConsole console(&output_frame);
+	GameMap gamemap(&game_frame, &viewport, &player);
+	gamemap.loadMap();
 
 	// enter game loop
-	game_loop(game_map, viewport, player, ch);
+	game_loop(gamemap, console, input);
+	//game_loop(&player, &game_frame, &viewport, &output_frame);
 
 	return 0;
 }

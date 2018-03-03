@@ -27,5 +27,8 @@ void InputHandler::handleInput(int ch) {
 	else if (ch == KEY_DOWN) {
 		_key_down->execute();
 	}
+	else if (ch == 'q' || ch == 'Q') {
+		
+	} 
 }
 

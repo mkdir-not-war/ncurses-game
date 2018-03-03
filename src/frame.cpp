@@ -48,13 +48,31 @@ void Frame::add(Actor& a, int row, int col) {
 	}
 }
 
+void Frame::erase(int row, int col) {
+	mvwaddch(_w, row, col, ' ');
+}
+
+void Frame::add(char ch, int row, int col) {
+	if ((row>=0 && row<_height) && (col>=0 && col<_width)) {
+		erase(row, col);
+		mvwaddch(_w, row, col, ch);
+	}
+}
+
+void Frame::add(char* str, int length, int row, int col) {
+	int col_pos = row;
+	for (int i = 0; i<length; i++) {
+		add(str[i], row, col_pos++);
+	}
+}
+
 // no idea how this works. Check out ncurses for documentation
 // https://invisible-island.net/ncurses/man/ncurses.3x.html
-void Frame::center(Actor& a) {
+void Frame::center(int crow, int ccol) {
 	if (_has_super) {
 		int rr = _row, cc = _col, hh, ww;
-		int _r = a.row() - _height/2;
-		int _c = a.col() - _width/2;
+		int _r = crow - _height/2;
+		int _c = ccol - _width/2;
 
 		getmaxyx(_super, hh, ww);
 
@@ -109,7 +127,7 @@ void Frame::move(int r, int c) {
 //         -----
 //         2 | 3 
 // This function is used only for debugging purposes.
-void Frame::fill_window() {
+void Frame::fillwindow() {
 	int max_x = _width/2;
 	int max_y = _height/2;
 	// Fill the first region with 0's
@@ -151,7 +169,7 @@ void Frame::fill_window() {
 	}
 }
 
-void Frame::gen_Perlin(const unsigned int& seed) {
+void Frame::genPerlin(const unsigned int& seed) {
 
 	PerlinNoise pn(seed);
 
