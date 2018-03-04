@@ -8,7 +8,7 @@
 class Command_Move : public Command {
 public:
 	// instantiate with move vector <x, y>
-	Command_Move(int, int, Actor*, GameMap*);
+	Command_Move(int, int, Actor&, GameMap&);
 	~Command_Move();
 
 	void execute();
@@ -16,8 +16,8 @@ public:
 private:
 	int _x;
 	int _y;
-	Actor* _player;
-	GameMap* _map;
+	Actor& _player;
+	GameMap& _map;
 };
 
 #endif

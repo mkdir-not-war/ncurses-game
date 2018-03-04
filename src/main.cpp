@@ -60,10 +60,10 @@ int main() {
 	Actor player('@', game_frame.height()/2, game_frame.width()/2);
 
 	// all handlers
-	TextConsole console(&output_frame);
-	GameMap gamemap(&game_frame, &viewport, &player);
+	TextConsole console(output_frame);
+	GameMap gamemap(game_frame, viewport, player);
 	gamemap.loadMap();
-	InputHandler input(&player, &gamemap);
+	InputHandler input(player, gamemap);
 
 	// enter game loop
 	game_loop(gamemap, console, input);

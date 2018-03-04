@@ -11,7 +11,7 @@
 class InputHandler {
 public:
 	// get player actor and frame
-	InputHandler(Actor*, GameMap*);
+	InputHandler(Actor&, GameMap&);
 	~InputHandler();
 	void handleInput(int);
 

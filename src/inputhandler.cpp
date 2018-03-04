@@ -1,6 +1,6 @@
 #include "inputhandler.h"
 
-InputHandler::InputHandler(Actor* player, GameMap* map) {
+InputHandler::InputHandler(Actor& player, GameMap& map) {
 	_key_up = new Command_Move(0, -1, player, map);
 	_key_down = new Command_Move(0, 1, player, map);
 	_key_left = new Command_Move(-1, 0, player, map);
@@ -14,8 +14,6 @@ InputHandler::~InputHandler() {
 	delete _key_right;
 }
 
-#include <iostream>
-#include <fstream>
 void InputHandler::handleInput(int ch) {
 	if (ch == KEY_LEFT) {
 		_key_left->execute();

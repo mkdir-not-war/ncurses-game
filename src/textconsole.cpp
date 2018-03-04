@@ -3,13 +3,13 @@
 textlog TextConsole::_log;
 Frame* TextConsole::_outputframe;
 
-TextConsole::TextConsole(Frame* outputframe) {
-	setFrame(outputframe);
+TextConsole::TextConsole(Frame& outputframe) {
+	setFrame(&outputframe);
 	clear(); // clear the log
 }
 
 TextConsole::~TextConsole() {
-
+	clear();
 }
 
 void TextConsole::setFrame(Frame* outputframe) {
@@ -17,13 +17,27 @@ void TextConsole::setFrame(Frame* outputframe) {
 }
 
 void TextConsole::refresh() {
-	_outputframe->add(_log.words[_log.head].word, 
-		_log.words[_log.head].len, 
-		0, 0);
+	int i = _log.head;
+	int counter = 0;
+	while (counter<_log.len) {
+		_outputframe->add(
+			_log.words[i].word, 
+			_log.words[i].len, 
+			0, counter);
+		i++;
+		counter++;
+		if (i >= TEXTLOG_BUFFERSIZE) {
+			i = 0;
+		}
+	}
 	_outputframe->refresh();
 }
 
-void TextConsole::print(char* word) {
+void TextConsole::print(std::string word) {
+	push(word);
+}
+
+void TextConsole::push(std::string word) {
 	// if log is full, pop the oldest entry
 	// regardless, append to the end
 
@@ -32,10 +46,18 @@ void TextConsole::print(char* word) {
 	strcpy(_word.word, poop);
 	_word.len = TEXTLOG_WORD_BUFFERSIZE;
 	*/
-}
 
-void TextConsole::push(char* word) {
-	print(word);
+	if (_log.len == TEXTLOG_BUFFERSIZE) {
+		pophead();
+	}
+	int newtail = _log.tail + 1;
+	if (newtail >= TEXTLOG_BUFFERSIZE) {
+		newtail = 0; // also could use modulo for this situation
+	}
+	strcpy(_log.words[newtail].word, word.c_str());
+	_log.words[newtail].len = word.length();
+	_log.tail = newtail;
+	_log.len++;
 }
 
 
@@ -45,6 +67,7 @@ void TextConsole::clear() {
 		_log.words[i].len = 0;
 	}
 	_log.head = 0;
+	_log.tail = -1; // set this so push on empty works
 }
 
 void TextConsole::pophead() {
@@ -67,6 +90,7 @@ void TextConsole::poptail() {
 		return;
 	}
 
+	/* use this if no tail variable in _log
 	// start at 1 because checking previous node for tail
 	for (int i=1; i<TEXTLOG_BUFFERSIZE; i++) {
 		if (_log.words[i].len == 0) {
@@ -86,6 +110,17 @@ void TextConsole::poptail() {
 				_log.head = 0;
 			}
 		}
+	}
+
+	_log.len--;
+	*/
+
+	// clear the tail
+	_log.words[_log.tail].len = 0;
+	// move the tail
+	_log.head = _log.tail - 1;	
+	if (_log.head < 0) {
+		_log.head = TEXTLOG_BUFFERSIZE-1;
 	}
 
 	_log.len--;

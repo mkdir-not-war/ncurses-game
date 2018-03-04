@@ -2,6 +2,7 @@
 #define TEXTCONSOLE_H_78sd9f0g79870
 
 #include <string.h>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 
@@ -14,13 +15,15 @@
 struct textlogword {
 	char word[TEXTLOG_WORD_BUFFERSIZE];
 	int len;
-}; // sizeof(textlogword) = 32
+}; // sizeof(textlogword) = 32 bytes
 
 struct textlog {
-	textlogword words[TEXTLOG_BUFFERSIZE];
-	unsigned short int len;
-	unsigned short int head;
-};
+	unsigned char len; // 1 bytes
+	unsigned char head; // 1 bytes
+	unsigned char tail; // 1 bytes
+	unsigned char __buffer; // 1 byte
+	textlogword words[TEXTLOG_BUFFERSIZE]; // 2^6 * 2^5 = 2^11 bytes
+}; // 4 + 2048 = 2052 bytes total
 
 class TextConsole {
 private:
@@ -30,14 +33,14 @@ private:
 	static void setFrame(Frame*);
 
 public:
-	TextConsole(Frame*);
+	TextConsole(Frame&);
 	~TextConsole();
 
 	// anyone who includes this header can use the logger
 	// DO NOT CALL FROM SEPARATE THREADS. NOT THREAD SAFE.
 	static void refresh();
-	static void print(char*); 
-	static void push(char*);
+	static void print(std::string); 
+	static void push(std::string);
 	static void clear();
 	static void pophead();
 	static void poptail();

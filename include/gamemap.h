@@ -7,7 +7,7 @@
 class GameMap {
 
 public:
-	GameMap(Frame*, Frame*, Actor*);
+	GameMap(Frame&, Frame&, Actor&);
 	~GameMap();
 
 	void refresh();
@@ -18,9 +18,9 @@ public:
 	void add(Actor&, int, int);
 
 private:
-	Frame* _viewport;
-	Frame* _mapframe;
-	Actor* _player;
+	Frame& _viewport;
+	Frame& _mapframe;
+	Actor& _player;
 };
 
 #endif
