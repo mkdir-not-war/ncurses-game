@@ -32,6 +32,7 @@ public:
 	void genPerlin(const unsigned int&);
 
 	void erase(int, int);
+	void fclear();
 	void add(char, int, int);
 	void add(char*, int, int, int);
 	void center(int, int);

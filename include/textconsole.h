@@ -2,7 +2,6 @@
 #define TEXTCONSOLE_H_78sd9f0g79870
 
 #include <string.h>
-#include <cstring>
 #include <iostream>
 #include <fstream>
 

@@ -17,13 +17,14 @@ void TextConsole::setFrame(Frame* outputframe) {
 }
 
 void TextConsole::refresh() {
+	_outputframe->fclear();
 	int i = _log.head;
 	int counter = 0;
 	while (counter<_log.len) {
 		_outputframe->add(
 			_log.words[i].word, 
 			_log.words[i].len, 
-			0, counter);
+			counter, 0);
 		i++;
 		counter++;
 		if (i >= TEXTLOG_BUFFERSIZE) {
@@ -74,10 +75,15 @@ void TextConsole::pophead() {
 	if (_log.len == 0) {
 		return;
 	}
+	if (_log.len == 1) {
+		clear();
+		return;
+	}
+
 	// clear the head
 	_log.words[_log.head].len = 0;
 	// move the head
-	_log.head = _log.head + 1;	
+	_log.head++;
 	if (_log.head >= TEXTLOG_BUFFERSIZE) {
 		_log.head = 0;
 	}
@@ -89,38 +95,17 @@ void TextConsole::poptail() {
 	if (_log.len == 0) {
 		return;
 	}
-
-	/* use this if no tail variable in _log
-	// start at 1 because checking previous node for tail
-	for (int i=1; i<TEXTLOG_BUFFERSIZE; i++) {
-		if (_log.words[i].len == 0) {
-			if (_log.words[i-1].len > 0) {
-				// empty space preceeded by word means the 
-				// word is the tail
-				_log.words[i-1].len = 0;
-			}
-		}
-		else {
-			// skip checking this, since its length is zero.
-			// can't be the tail
-			i++;
-			if (i >= TEXTLOG_BUFFERSIZE && _log.head > 0) {
-				// the last element is the head and tail
-				_log.words[TEXTLOG_BUFFERSIZE-1].len = 0;
-				_log.head = 0;
-			}
-		}
+	if (_log.len == 1) {
+		clear();
+		return;
 	}
-
-	_log.len--;
-	*/
 
 	// clear the tail
 	_log.words[_log.tail].len = 0;
 	// move the tail
-	_log.head = _log.tail - 1;	
-	if (_log.head < 0) {
-		_log.head = TEXTLOG_BUFFERSIZE-1;
+	_log.tail--;	
+	if (_log.tail < 0) {
+		_log.tail = TEXTLOG_BUFFERSIZE-1;
 	}
 
 	_log.len--;

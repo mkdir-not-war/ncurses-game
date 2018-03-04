@@ -30,6 +30,10 @@ void Frame::erase(int row, int col) {
 	mvwaddch(_w, row, col, ' ');
 }
 
+void Frame::fclear() {
+	wclear(_w);
+}
+
 void Frame::add(char ch, int row, int col) {
 	if ((row>=0 && row<_height) && (col>=0 && col<_width)) {
 		erase(row, col);

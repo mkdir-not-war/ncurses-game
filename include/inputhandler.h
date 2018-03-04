@@ -20,7 +20,8 @@ private:
 	Command* _key_down;
 	Command* _key_left;
 	Command* _key_right;
-	//Command* _enter;
+	//Command* _key_home;
+	//Command* _key_end;
 };
 
 #endif
