@@ -18,7 +18,6 @@ InputHandler::~InputHandler() {
 	//delete _key_end;
 }
 
-#include "textconsole.h"
 void InputHandler::handleInput(int ch) {
 	if (ch == KEY_LEFT) {
 		_key_left->execute();
@@ -39,6 +38,10 @@ void InputHandler::handleInput(int ch) {
 	else if (ch == KEY_END) {
 		//_key_end->execute();
 		TextConsole::poptail();
+	}
+	else if (ch == KEY_IC) {
+		TextConsole::writetofile();
+		TextConsole::print("file written");
 	}
 	else if (ch == 'q' || ch == 'Q') {
 		

@@ -18,9 +18,11 @@ void TextConsole::setFrame(Frame* outputframe) {
 
 void TextConsole::refresh() {
 	_outputframe->fclear();
+	int height = _outputframe->height();
 	int i = _log.head;
 	int counter = 0;
-	while (counter<_log.len) {
+	while (counter<_log.len &&
+			counter<height) {
 		_outputframe->add(
 			_log.words[i].word, 
 			_log.words[i].len, 
@@ -104,7 +106,8 @@ void TextConsole::poptail() {
 	_log.words[_log.tail].len = 0;
 	// move the tail
 	_log.tail--;	
-	if (_log.tail < 0) {
+	// _log len, head and tail are all unsigned chars. 0-1=255.
+	if (_log.tail >= TEXTLOG_BUFFERSIZE) {
 		_log.tail = TEXTLOG_BUFFERSIZE-1;
 	}
 
@@ -117,7 +120,7 @@ void TextConsole::pop() {
 
 void TextConsole::writetofile() {
 	std::ofstream f;
-	f.open("./debug/textlog.txt");
+	f.open("./output/textlog.txt");
 
 	int i = _log.head;
 	int counter = 0;
