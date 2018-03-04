@@ -18,11 +18,11 @@ void TextConsole::setFrame(Frame* outputframe) {
 
 void TextConsole::refresh() {
 	_outputframe->fclear();
-	int height = _outputframe->height();
+	int height = _outputframe->height()-1;
 	int i = _log.head;
 	int counter = 0;
 	while (counter<_log.len &&
-			counter<height) {
+			counter<height-1) {
 		_outputframe->add(
 			_log.words[i].word, 
 			_log.words[i].len, 

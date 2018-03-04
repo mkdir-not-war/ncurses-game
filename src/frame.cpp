@@ -36,15 +36,14 @@ void Frame::fclear() {
 
 void Frame::add(char ch, int row, int col) {
 	if ((row>=0 && row<_height) && (col>=0 && col<_width)) {
-		erase(row, col);
 		mvwaddch(_w, row, col, ch);
 	}
 }
 
 void Frame::add(char* str, int length, int row, int col) {
-	int col_pos = row;
+	int col_pos = col;
 	for (int i = 0; i<length; i++) {
-		add(str[i], row, col_pos++);
+		add(str[i], row, col_pos+i);
 	}
 }
 

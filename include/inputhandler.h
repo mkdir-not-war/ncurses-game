@@ -23,6 +23,7 @@ private:
 	Command* _key_right;
 	//Command* _key_home;
 	//Command* _key_end;
+	//Command* _key_inc;
 };
 
 #endif

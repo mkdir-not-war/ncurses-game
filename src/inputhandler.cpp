@@ -7,6 +7,7 @@ InputHandler::InputHandler(Actor& player, GameMap& map) {
 	_key_right = new Command_Move(1, 0, player, map);
 	//_key_home = new Command_
 	//_key_end = new Command_
+	//_key_inc = new Command_
 }
 
 InputHandler::~InputHandler() {
@@ -16,6 +17,7 @@ InputHandler::~InputHandler() {
 	delete _key_right;
 	//delete _key_home;
 	//delete _key_end;
+	//delete _key_inc;
 }
 
 void InputHandler::handleInput(int ch) {
@@ -37,11 +39,11 @@ void InputHandler::handleInput(int ch) {
 	}
 	else if (ch == KEY_END) {
 		//_key_end->execute();
-		TextConsole::poptail();
+		TextConsole::pop();
 	}
 	else if (ch == KEY_IC) {
 		TextConsole::writetofile();
-		TextConsole::print("file written");
+		TextConsole::clear();
 	}
 	else if (ch == 'q' || ch == 'Q') {
 		

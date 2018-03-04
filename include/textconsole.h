@@ -8,7 +8,7 @@
 #include "frame.h"
 
 #define TEXTLOG_WORD_BUFFERSIZE	28 // 28 + sizeof(int) = 32
-#define TEXTLOG_BUFFERSIZE 		8
+#define TEXTLOG_BUFFERSIZE 		64
 
 // text log list and output frame
 struct textlogword {

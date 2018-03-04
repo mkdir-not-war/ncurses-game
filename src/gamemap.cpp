@@ -37,7 +37,7 @@ void GameMap::add(Actor& a, int row, int col) {
 		// check if permeable
 		if (true) {
 			erase(a);
-			_mapframe.add(a.symbol(), a.row(), a.col());
+			_mapframe.add(a.symbol(), row, col);
 			a.moveto(row, col);
 		}
 		else {

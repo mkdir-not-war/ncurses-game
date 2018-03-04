@@ -5,6 +5,11 @@
 #include "actor.h"
 #include "gamemap.h"
 
+struct Vector2i {
+	int x;
+	int y;
+};
+
 class Command_Move : public Command {
 public:
 	// instantiate with move vector <x, y>
@@ -14,8 +19,7 @@ public:
 	void execute();
 
 private:
-	int _x;
-	int _y;
+	Vector2i _dir;
 	Actor& _player;
 	GameMap& _map;
 };
