@@ -42,8 +42,7 @@ void InputHandler::handleInput(int ch) {
 		TextConsole::pop();
 	}
 	else if (ch == KEY_IC) {
-		TextConsole::writetofile();
-		TextConsole::clear();
+		TextConsole::print("crap");
 	}
 	else if (ch == 'q' || ch == 'Q') {
 		

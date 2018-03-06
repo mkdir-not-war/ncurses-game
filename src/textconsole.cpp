@@ -20,6 +20,10 @@ void TextConsole::refresh() {
 	_outputframe->fclear();
 	int height = _outputframe->height()-1;
 	int i = _log.head;
+	if (height <= _log.len) {
+		i += _log.len-height+1;
+		i %= TEXTLOG_BUFFERSIZE;
+	}
 	int counter = 0;
 	while (counter<_log.len &&
 			counter<height-1) {
@@ -29,9 +33,7 @@ void TextConsole::refresh() {
 			counter, 0);
 		i++;
 		counter++;
-		if (i >= TEXTLOG_BUFFERSIZE) {
-			i = 0;
-		}
+		i %= TEXTLOG_BUFFERSIZE;
 	}
 	_outputframe->refresh();
 }
