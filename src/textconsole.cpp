@@ -56,9 +56,7 @@ void TextConsole::push(std::string word) {
 		pophead();
 	}
 	int newtail = _log.tail + 1;
-	if (newtail >= TEXTLOG_BUFFERSIZE) {
-		newtail = 0; // also could use modulo for this situation
-	}
+	newtail %= TEXTLOG_BUFFERSIZE;
 	strcpy(_log.words[newtail].word, word.c_str());
 	_log.words[newtail].len = word.length();
 	_log.tail = newtail;
@@ -88,9 +86,7 @@ void TextConsole::pophead() {
 	_log.words[_log.head].len = 0;
 	// move the head
 	_log.head++;
-	if (_log.head >= TEXTLOG_BUFFERSIZE) {
-		_log.head = 0;
-	}
+	_log.head %= TEXTLOG_BUFFERSIZE;
 
 	_log.len--;
 }
@@ -107,11 +103,8 @@ void TextConsole::poptail() {
 	// clear the tail
 	_log.words[_log.tail].len = 0;
 	// move the tail
-	_log.tail--;	
-	// _log len, head and tail are all unsigned chars. 0-1=255.
-	if (_log.tail >= TEXTLOG_BUFFERSIZE) {
-		_log.tail = TEXTLOG_BUFFERSIZE-1;
-	}
+	_log.tail--;
+	_log.tail %= TEXTLOG_BUFFERSIZE;
 
 	_log.len--;
 }
