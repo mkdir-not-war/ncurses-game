@@ -15,6 +15,7 @@ public:
 	InputHandler(Actor&, GameMap&);
 	~InputHandler();
 	void handleInput(int);
+	void printHelp();
 
 private:
 	Command* _key_up;
@@ -24,6 +25,10 @@ private:
 	//Command* _key_home;
 	//Command* _key_end;
 	//Command* _key_inc;
+
+	// get rid of this var once gamestates are made 
+	// with subclasses of inputhandler (strategy pattern)
+	bool _help;
 };
 
 #endif

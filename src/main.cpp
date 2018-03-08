@@ -35,7 +35,12 @@ int main() {
 	Screen scr;
 
 	// print a string on screen
-	printw("Thanks for playing.\nPress any key to continue.\nPress q to quit.");
+	std::string thanks = "Thanks for playing.\n";
+	std::string titleinfo = thanks +
+		"Press any key to continue.\n" + 
+		"Press h for help at any time.\n" +
+		"Press q to quit.";
+	printw(titleinfo.c_str());
 
 	// starting key press
 	int ch = getch();

@@ -42,7 +42,14 @@ void Frame::add(char ch, int row, int col) {
 
 void Frame::add(char* str, int length, int row, int col) {
 	int col_pos = col;
+	//int row_pos = row;
 	for (int i = 0; i<length; i++) {
+		/*
+		* Automatic text-wrap won't work here because textconsole
+		* has no way of knowing which rows are empty and 
+		* which aren't. Instead, textconsole should add long 
+		* strings in chunks of size frame.width()
+		*/
 		add(str[i], row, col_pos+i);
 	}
 }

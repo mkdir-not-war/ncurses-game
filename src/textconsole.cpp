@@ -27,6 +27,11 @@ void TextConsole::refresh() {
 	int counter = 0;
 	while (counter<_log.len &&
 			counter<height-1) {
+		// if word is too long for a single line, add in chunks
+		/* if (_log.words[i].len > _outputframe.width()) {
+
+		}
+		*/
 		_outputframe->add(
 			_log.words[i].word, 
 			_log.words[i].len, 

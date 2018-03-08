@@ -17,6 +17,7 @@ public:
 	~Command_Move();
 
 	void execute();
+	std::string toString(std::string) const;
 
 private:
 	Vector2i _dir;
