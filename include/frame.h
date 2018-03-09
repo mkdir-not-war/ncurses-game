@@ -3,8 +3,6 @@
 
 #include <ncurses.h>
 
-#include "perlinnoise.h"
-
 class Frame {
 private:
 	int _height, _width;
@@ -29,7 +27,6 @@ public:
 	//         2 | 3 
 	// This function is used only for debugging purposes.	
 	void fillwindow();
-	void genPerlin(const unsigned int&);
 
 	void erase(int, int);
 	void fclear();

@@ -1,7 +1,12 @@
 #include "actor.h"
 
-Actor::Actor(char symbol, int row, int col, bool permeable) :
-	_symbol(symbol), _row(row), _col(col), _permeable(permeable)
+Actor::Actor() :
+	_symbol(' '), _row(-1), _col(-1)
+{
+}
+
+Actor::Actor(char symbol, int row, int col) :
+	_symbol(symbol), _row(row), _col(col)
 {
 }
 
@@ -21,8 +26,3 @@ int Actor::col() const {
 char Actor::symbol() const {
 	return _symbol;
 }
-
-bool Actor::permeable() const {
-	return _permeable;
-}
-

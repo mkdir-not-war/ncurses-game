@@ -157,37 +157,6 @@ void Frame::fillwindow() {
 	}
 }
 
-void Frame::genPerlin(const unsigned int& seed) {
-
-	PerlinNoise pn(seed);
-
-	for(int i = 0; i < _height; ++i) {     // y
-		for(int j = 0; j < _width; ++j) {  // x
-			double x = (double)j/((double) _width);
-			double y = (double)i/((double) _height);
-
-			double n = pn.noise(10 * x, 10 * y, 0.8);
-
-			// Water (or a Lakes)
-			if(n < 0.35) {
-				mvwaddch(_w, i, j, '~');
-			}
-			// Floors (or Planes)
-			else if (n >= 0.35 && n < 0.6) {
-				mvwaddch(_w, i, j, '.');
-			}
-			// Walls (or Mountains)
-			else if (n >= 0.6 && n < 0.8) {
-				mvwaddch(_w, i, j, '#');
-			}
-			// Ice (or Snow)
-			else {
-				mvwaddch(_w, i, j, 'S');
-			}
-		}
-	}
-}
-
 WINDOW* Frame::win() const {
 	return _w;
 }
