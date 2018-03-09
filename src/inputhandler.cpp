@@ -66,7 +66,7 @@ void InputHandler::handleInput(int ch) {
 			TextConsole::pop();
 		}
 		else if (ch == KEY_IC) {
-			TextConsole::print("crap");
+			TextConsole::print("This is a test of the word length.");
 		}
 		/*
 		else if (ch == 'q' || ch == 'Q') {

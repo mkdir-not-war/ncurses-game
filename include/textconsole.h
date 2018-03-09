@@ -2,8 +2,9 @@
 #define TEXTCONSOLE_H_78sd9f0g79870
 
 #include <string.h>
-#include <iostream>
+#include <string>
 #include <fstream>
+#include <assert.h>
 
 #include "frame.h"
 

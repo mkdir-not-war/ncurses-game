@@ -27,17 +27,21 @@ void TextConsole::refresh() {
 	int counter = 0;
 	while (counter<_log.len &&
 			counter<height-1) {
-		// if word is too long for a single line, add in chunks
-		/* if (_log.words[i].len > _outputframe.width()) {
 
-		}
+		/*
+		* No text wrapping functionality because the textlogword 
+		* has only TEXTLOG_WORD_BUFFERSIZE amount of chars it can 
+		* store and so even when word wrapping works, it gets 
+		* overwritten when a new word is added to the text log.
 		*/
+		
 		_outputframe->add(
 			_log.words[i].word, 
 			_log.words[i].len, 
-			counter, 0);
-		i++;
+			counter, 0);	
+
 		counter++;
+		i++;
 		i %= TEXTLOG_BUFFERSIZE;
 	}
 	_outputframe->refresh();
@@ -62,8 +66,14 @@ void TextConsole::push(std::string word) {
 	}
 	int newtail = _log.tail + 1;
 	newtail %= TEXTLOG_BUFFERSIZE;
-	strcpy(_log.words[newtail].word, word.c_str());
-	_log.words[newtail].len = word.length();
+
+	int wordlength = word.length();
+	if (wordlength > TEXTLOG_WORD_BUFFERSIZE) {
+		wordlength = TEXTLOG_WORD_BUFFERSIZE;
+	}
+
+	strncpy(_log.words[newtail].word, word.c_str(), wordlength);
+	_log.words[newtail].len = wordlength;
 	_log.tail = newtail;
 	_log.len++;
 }
