@@ -27,6 +27,8 @@ private:
 	Prop* _prop_ice;
 	Prop* _prop_water;
 
+	Prop* _prop_null;
+
 	PropMap _mapprops;
 	//Actor _mapactors[MAXACTORS];
 

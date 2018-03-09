@@ -50,8 +50,8 @@ int main() {
 	float game_frame_width_ratio = 0.6;
 	float output_frame_width_ratio = 1.0 - game_frame_width_ratio;
 
-	Frame game_frame(2*scr.height(), 
-		2*scr.width(), 
+	Frame game_frame(MAPHEIGHT, 
+		MAPWIDTH, 
 		0, 0);
 	Frame viewport(game_frame, scr.height(), 
 		scr.width() * game_frame_width_ratio, 

@@ -29,7 +29,7 @@ void GameMap::refresh() {
 	for (int i=0; i<_mapframe.width(); i++) {
 		for (int j=0; j<_mapframe.height(); j++) {
 			Prop* p = getProp(i, j);
-			_mapframe.add(p->symbol(), j, i);
+			_mapframe.add(p->symbol(), i, j);
 		}
 	}
 
@@ -82,29 +82,29 @@ void GameMap::genPerlin(const unsigned int& seed) {
 
 	PerlinNoise pn(seed);
 
-	for(int i = 0; i < MAPHEIGHT; ++i) {     // y
-		for(int j = 0; j < MAPWIDTH; ++j) {  // x
-			double x = (double)j/((double) MAPWIDTH);
-			double y = (double)i/((double) MAPHEIGHT);
+	for(int row = 0; row < MAPHEIGHT; ++row) {     // y
+		for(int col = 0; col < MAPWIDTH; ++col) {  // x
+			double x = (double)col/((double) MAPWIDTH);
+			double y = (double)row/((double) MAPHEIGHT);
 
 			double n = pn.noise(10 * x, 10 * y, 0.8);
 
 
 			// Water (or a Lakes)
 			if(n < 0.35) {
-				_mapprops.props[i*MAPWIDTH + j] = _prop_water;
+				_mapprops.props[row*MAPWIDTH + col] = _prop_water;
 			}
 			// Floors (or Planes)
 			else if (n >= 0.35 && n < 0.6) {
-				_mapprops.props[i*MAPWIDTH + j] = _prop_ground;
+				_mapprops.props[row*MAPWIDTH + col] = _prop_ground;
 			}
 			// Walls (or Mountains)
 			else if (n >= 0.6 && n < 0.8) {
-				_mapprops.props[i*MAPWIDTH + j] = _prop_wall;
+				_mapprops.props[row*MAPWIDTH + col] = _prop_wall;
 			}
 			// Ice (or Snow)
 			else {
-				_mapprops.props[i*MAPWIDTH + j] = _prop_ice;
+				_mapprops.props[row*MAPWIDTH + col] = _prop_ice;
 			}
 
 		}
@@ -112,7 +112,7 @@ void GameMap::genPerlin(const unsigned int& seed) {
 }
 
 Prop* GameMap::getProp(int row, int col) {
-	return _mapprops.props[col*MAPWIDTH + row];
+	return _mapprops.props[row*MAPWIDTH + col];
 }
 
 /*
