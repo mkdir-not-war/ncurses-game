@@ -1,7 +1,7 @@
 #ifndef FRAME_H_9943758925
 #define FRAME_H_9943758925
 
-#include <ncurses.h>
+#include <config.h>
 
 class Frame {
 private:

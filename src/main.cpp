@@ -1,4 +1,4 @@
-#include <ncurses.h>
+#include <config.h>
 
 #include "actor.h"
 #include "frame.h"

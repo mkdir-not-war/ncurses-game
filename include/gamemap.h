@@ -8,8 +8,8 @@
 
 #include "perlinnoise.h"
 
-#define MAPWIDTH	64
-#define MAPHEIGHT	64
+#define MAPWIDTH	128
+#define MAPHEIGHT	128
 #define MAXACTORS	32
 
 class GameMap {

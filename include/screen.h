@@ -1,7 +1,7 @@
 #ifndef SCREEN_H_327859
 #define SCREEN_H_327859
 
-#include <ncurses.h>
+#include <config.h>
 
 class Screen {
 private:

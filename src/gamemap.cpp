@@ -91,11 +91,11 @@ void GameMap::genPerlin(const unsigned int& seed) {
 
 
 			// Water (or a Lakes)
-			if(n < 0.35) {
+			if(n < 0.28) {
 				_mapprops.props[row*MAPWIDTH + col] = _prop_water;
 			}
 			// Floors (or Planes)
-			else if (n >= 0.35 && n < 0.6) {
+			else if (n >= 0.25 && n < 0.6) {
 				_mapprops.props[row*MAPWIDTH + col] = _prop_ground;
 			}
 			// Walls (or Mountains)

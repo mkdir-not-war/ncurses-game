@@ -1,7 +1,7 @@
 #ifndef INPUTHANDLER_H_70d6fg7098
 #define INPUTHANDLER_H_70d6fg7098
 
-#include <ncurses.h>
+#include <config.h>
 #include "textconsole.h" // use for debugging
 
 #include "command.h"
