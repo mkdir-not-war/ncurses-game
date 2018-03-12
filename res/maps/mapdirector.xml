@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MapDirector>
+	<Map name="simpletest" path="./test/map_simpletest.txt">
+	</Map>
+
+	<Map name="testdoorA" path="./test/map_testdoorA.txt">
+		<Portal id="1" to="testdoorB" toid="1"></Portal>
+	</Map>
+
+	<Map name="testdoorB" path="./test/map_testdoorB.txt">
+		<Portal id="1" to="testdoorA" toid="1"></Portal>
+	</Map>
+
+	
+</MapDiretor>
