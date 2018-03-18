@@ -1,7 +1,7 @@
 #include "inputhandler.h"
 
 InputHandler::InputHandler(Actor& player, GameMap& map) :
-	_help(false) {
+	_try_again(false), _help(false), _confirm_input(false) {
 	_key_up = new Command_Move(0, -1, player, map);
 	_key_down = new Command_Move(0, 1, player, map);
 	_key_left = new Command_Move(-1, 0, player, map);
@@ -9,6 +9,7 @@ InputHandler::InputHandler(Actor& player, GameMap& map) :
 	//_key_home = new Command_
 	//_key_end = new Command_
 	//_key_inc = new Command_
+	//_key_mouse = new Command_
 }
 
 InputHandler::~InputHandler() {
@@ -19,6 +20,7 @@ InputHandler::~InputHandler() {
 	//delete _key_home;
 	//delete _key_end;
 	//delete _key_inc;
+	//delete _key_mouse;
 }
 
 void InputHandler::printHelp() {
@@ -34,45 +36,76 @@ void InputHandler::printHelp() {
 }
 
 void InputHandler::handleInput(int ch) {
-	if (ch == 'h' || ch == 'H') {
-		if (!_help) {
-			printHelp();
-			_help = true;
+	do {
+		// if invalid input, get new input
+		if (_try_again) {
+			ch = getch();
+		}
+
+		// assume this input will be valid
+		_try_again = false;
+
+		// check to leave the game no matter the state
+		if (ch == 'q' || ch == 'Q') {
+			exit(0);
+		}
+
+		// check states to determine input response
+		if (_help) {
+			if (ch == 'h' || ch == 'H') {
+				TextConsole::clear();
+				_help = false;
+			}
+			else {
+				_try_again = true;
+			}
 		}
 		else {
-			TextConsole::clear();
-			_help = false;
+			if (_confirm_input) {
+				if (ch == 'y' || ch == 'Y') {
+					_confirm_input = false;
+					// _key_mouse_left->execute();
+				}
+				else if (ch == 'n' || ch == 'N') {
+					_confirm_input = false;
+				}
+				else {
+					_try_again = true;
+				}
+			}
+			else {
+				if (ch == KEY_LEFT) {
+					_key_left->execute();
+				}
+				else if (ch == KEY_RIGHT) {
+					_key_right->execute();
+				}
+				else if (ch == KEY_UP) {
+					_key_up->execute();
+				}
+				else if (ch == KEY_DOWN) {
+					_key_down->execute();
+				}
+				else if (ch == KEY_HOME) {
+					//_key_home->execute();
+					TextConsole::print("poop");
+				}
+				else if (ch == KEY_END) {
+					//_key_end->execute();
+					TextConsole::pop();
+				}
+				else if (ch == KEY_IC) {
+					TextConsole::clear();
+				}
+				else if (ch == 'h' || ch == 'H') {
+					printHelp();
+					_help = true;
+				}
+				else {
+					_try_again = true;
+				}
+			}
 		}
-	}
-	else if (!_help) {
-		if (ch == KEY_LEFT) {
-			_key_left->execute();
-		}
-		else if (ch == KEY_RIGHT) {
-			_key_right->execute();
-		}
-		else if (ch == KEY_UP) {
-			_key_up->execute();
-		}
-		else if (ch == KEY_DOWN) {
-			_key_down->execute();
-		}
-		else if (ch == KEY_HOME) {
-			//_key_home->execute();
-			TextConsole::print("poop");
-		}
-		else if (ch == KEY_END) {
-			//_key_end->execute();
-			TextConsole::pop();
-		}
-		else if (ch == KEY_IC) {
-			TextConsole::clear();
-		}
-		/*
-		else if (ch == 'q' || ch == 'Q') {
-			
-		} 
-		*/
-	}
+	} while (_try_again);
 }
 

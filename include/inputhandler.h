@@ -25,10 +25,14 @@ private:
 	//Command* _key_home;
 	//Command* _key_end;
 	//Command* _key_inc;
+	//Command* _key_mouse_right;
+	//Command* _key_mouse_left;
 
 	// get rid of this var once gamestates are made 
 	// with subclasses of inputhandler (strategy pattern)
 	bool _help;
+	bool _confirm_input;
+	bool _try_again;
 };
 
 #endif
