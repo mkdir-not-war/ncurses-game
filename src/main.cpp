@@ -18,6 +18,7 @@ void game_loop(GameMap& map,
 	while (1) {
 		// process input (block; turn based)
 		ch = getch();
+		if (ch == 'q' || ch == 'Q') exit(0);
 
 		input.handleInput(ch);
 
