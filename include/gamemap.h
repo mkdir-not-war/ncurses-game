@@ -52,6 +52,12 @@ public:
 	void addActor(Actor&);
 	void addActor(Actor&, int, int);
 
+	// maybe combine these into a struct later??
+	int row() const;
+	int col() const;
+	int height() const;
+	int width() const;
+
 	Prop* getProp(int, int);
 	//bool getActor(int, int, Actor&);
 };

@@ -61,6 +61,10 @@ int main() {
 		scr.width() * output_frame_width_ratio, 
 		1, (scr.width() * game_frame_width_ratio) + 1);
 
+	// get mouse input on map frame window
+	keypad(viewport.win(), true);
+	mousemask(BUTTON1_PRESSED | BUTTON3_PRESSED, NULL);
+
 	// Initialize game objects and map /////////////////////
 	// create player actor
 	Actor player('@', game_frame.height()/2, game_frame.width()/2);

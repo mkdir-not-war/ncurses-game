@@ -6,8 +6,12 @@
 
 #include "command.h"
 #include "command_move.h"
+#include "command_describetile.h"
 #include "actor.h"
 #include "gamemap.h"
+
+#define KEY_NUMPAD_ZERO		48
+#define KEY_NUMPAD_ONE		49
 
 class InputHandler {
 public:
@@ -25,7 +29,7 @@ private:
 	//Command* _key_home;
 	//Command* _key_end;
 	//Command* _key_inc;
-	//Command* _key_mouse_right;
+	Command* _key_mouse_right;
 	//Command* _key_mouse_left;
 
 	// get rid of this var once gamestates are made 

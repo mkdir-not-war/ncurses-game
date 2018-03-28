@@ -9,7 +9,7 @@ InputHandler::InputHandler(Actor& player, GameMap& map) :
 	//_key_home = new Command_
 	//_key_end = new Command_
 	//_key_inc = new Command_
-	//_key_mouse = new Command_
+	_key_mouse_right = new Command_DescribeTile(map);
 }
 
 InputHandler::~InputHandler() {
@@ -20,7 +20,7 @@ InputHandler::~InputHandler() {
 	//delete _key_home;
 	//delete _key_end;
 	//delete _key_inc;
-	//delete _key_mouse;
+	delete _key_mouse_right;
 }
 
 void InputHandler::printHelp() {
@@ -36,6 +36,7 @@ void InputHandler::printHelp() {
 }
 
 void InputHandler::handleInput(int ch) {
+	MEVENT event;
 	do {
 		// if invalid input, get new input
 		if (_try_again) {
@@ -86,6 +87,21 @@ void InputHandler::handleInput(int ch) {
 				else if (ch == KEY_DOWN) {
 					_key_down->execute();
 				}
+				else if (ch == KEY_MOUSE) {
+					if (getmouse(&event) == OK) {
+						if (event.bstate & BUTTON1_PRESSED) {
+							TextConsole::print("Left mouse click");
+						}
+						else if (event.bstate & BUTTON3_PRESSED) {
+							// this command requires x and y coordinates
+							_key_mouse_right->execute(event.x, event.y);
+						}
+						else 
+						{
+
+						}
+					}
+				}
 				else if (ch == KEY_HOME) {
 					//_key_home->execute();
 					TextConsole::print("poop");
@@ -102,6 +118,7 @@ void InputHandler::handleInput(int ch) {
 					_help = true;
 				}
 				else {
+					TextConsole::print(std::to_string(ch));
 					_try_again = true;
 				}
 			}

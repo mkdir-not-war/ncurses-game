@@ -5,8 +5,8 @@ Prop::Prop() :
 {
 }
 
-Prop::Prop(char symbol, bool permeable) :
-	_symbol(symbol), _permeable(permeable)
+Prop::Prop(char symbol, bool permeable, std::string desc) :
+	_symbol(symbol), _permeable(permeable), _description(desc)
 {
 }
 
@@ -31,4 +31,8 @@ char Prop::symbol() const {
 
 bool Prop::permeable() const {
 	return _permeable;
+}
+
+std::string Prop::description() const {
+	return _description;
 }

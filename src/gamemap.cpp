@@ -3,10 +3,14 @@
 GameMap::GameMap(Frame& mapframe, Frame& viewport, Actor& player) :
 	_mapframe(mapframe), _viewport(viewport), _player(player) {
 
-	_prop_ground = new Prop('.', true);
-	_prop_wall = new Prop('#', false);
-	_prop_ice = new Prop('S', false);
-	_prop_water = new Prop('~', false);
+	_prop_ground = new Prop('.', true,
+		std::string("ground"));
+	_prop_wall = new Prop('#', false,
+		std::string("a wall"));
+	_prop_ice = new Prop('S', false,
+		std::string("ice"));
+	_prop_water = new Prop('~', false,
+		std::string("water"));
 
 	_prop_null = new Prop();
 }
@@ -111,7 +115,26 @@ void GameMap::genPerlin(const unsigned int& seed) {
 	}
 }
 
+int GameMap::row() const {
+	return _viewport.row();
+}
+
+int GameMap::col() const {
+	return _viewport.col();
+}
+
+int GameMap::height() const {
+	return _viewport.height();
+}
+
+int GameMap::width() const {
+	return _viewport.width();
+}
+
 Prop* GameMap::getProp(int row, int col) {
+	if (row < 0 || col < 0) 
+		return NULL;
+	
 	return _mapprops.props[row*MAPWIDTH + col];
 }
 
