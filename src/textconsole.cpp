@@ -27,13 +27,6 @@ void TextConsole::refresh() {
 	int counter = 0;
 	while (counter<_log.len &&
 			counter<height-1) {
-
-		/*
-		* No text wrapping functionality because the textlogword 
-		* has only TEXTLOG_WORD_BUFFERSIZE amount of chars it can 
-		* store and so even when word wrapping works, it gets 
-		* overwritten when a new word is added to the text log.
-		*/
 		
 		_outputframe->add(
 			_log.words[i].word, 
@@ -51,15 +44,76 @@ void TextConsole::print(std::string word) {
 	push(word);
 }
 
-void TextConsole::push(std::string word) {
+void TextConsole::splitnword(std::string& first, 
+	std::string& rest) {
+	std::string delimiter = "\n";
+	size_t pos = 0;
+	pos = first.find(delimiter);
+	if (pos != std::string::npos) {
+		std::string temp = first.substr(0, pos);
+		rest = first;
+		rest.erase(0, pos + delimiter.length());
+		first = temp;
+	}
+}
+
+void TextConsole::splitsword(std::string& first, 
+	std::string& rest) {
+	std::string delimiter = " ";
+
+	std::string word = "";
+	std::string firstcopy = first + delimiter;
+
+	std::string debug = ">>";
+
+	size_t pos = 0;
+	while ((pos = firstcopy.find(delimiter)) != std::string::npos) {
+		std::string temp = firstcopy.substr(0, pos);
+		std::string tempword = word;
+		if (tempword.length() > 0) {
+			tempword += delimiter;
+		}
+		tempword += temp;
+
+		// add three here for the tabs on continued lines
+		if (tempword.length()+3 > TEXTLOG_WORD_BUFFERSIZE) {
+			first = word;
+			rest = firstcopy;
+			return;
+		}
+		else {
+			word = tempword;
+		}
+		firstcopy.erase(0, pos + delimiter.length());
+	}
+	return; // first is unchanged, rest is empty
+}
+
+void TextConsole::push(std::string word, bool wrap) {
+	// if the word is longer than the word buffer size,
+	// split by newline first, then spaces and try again
+
+	if (wrap == true) {
+		if (word.length() > TEXTLOG_WORD_BUFFERSIZE) {
+			std::string rest = "";
+
+			splitnword(word, rest); // try splitting on newline
+
+			if (rest.length() == 0) { // if no newline characters in word
+				splitsword(word, rest); // try splitting on spaces
+			}
+
+			if (rest.length() > 0) {
+				push(word);
+				std::string tabdrest = "\t\t\t" + rest;
+				push(tabdrest);
+				return;
+			}
+		}
+	}
+
 	// if log is full, pop the oldest entry
 	// regardless, append to the end
-
-	/*
-	char poop[] = "poop";
-	strcpy(_word.word, poop);
-	_word.len = TEXTLOG_WORD_BUFFERSIZE;
-	*/
 
 	if (_log.len == TEXTLOG_BUFFERSIZE) {
 		pophead();

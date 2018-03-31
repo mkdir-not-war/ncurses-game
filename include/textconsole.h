@@ -31,6 +31,8 @@ private:
 	static Frame* _outputframe;
 
 	static void setFrame(Frame*);
+	static void splitsword(std::string&, std::string&);
+	static void splitnword(std::string&, std::string&);
 
 public:
 	TextConsole(Frame&);
@@ -40,7 +42,7 @@ public:
 	// DO NOT CALL FROM SEPARATE THREADS. NOT THREAD SAFE.
 	static void refresh();
 	static void print(std::string); 
-	static void push(std::string);
+	static void push(std::string, bool wrap=true);
 	static void clear();
 	static void pophead();
 	static void poptail();
