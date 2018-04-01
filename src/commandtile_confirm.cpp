@@ -22,8 +22,9 @@ bool CommandTile_Confirm::execute(int x, int y) {
 	}
 
 	Prop* prop = _map.getProp(row, col);
+	Actor* actor = _map.getActor(row, col);
 
-	if (prop) {
+	if (prop && !actor) {
 		TextConsole::print("Cast magic? (y/n)");
 		_tempprop = prop;
 		_map.setProp(row, col, _confirmprop);
