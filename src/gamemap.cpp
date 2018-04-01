@@ -138,6 +138,16 @@ Prop* GameMap::getProp(int row, int col) {
 	return _mapprops.props[row*MAPWIDTH + col];
 }
 
+Prop* GameMap::setProp(int row, int col, Prop* newprop) {
+	if (row < 0 || col < 0) 
+		return NULL;
+
+	Prop* temp = _mapprops.props[row*MAPWIDTH + col];
+	_mapprops.props[row*MAPWIDTH + col] = newprop;
+	
+	return temp;
+}
+
 /*
 bool GameMap::getActor(int row, int col, Actor& a) {
 	for (int i=0; i<MAXACTORS; i++) {

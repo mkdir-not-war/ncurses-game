@@ -1,14 +1,10 @@
 #ifndef COMMAND_MOVE_H_789d0fg78
 #define COMMAND_MOVE_H_789d0fg78
 
+#include "mymath.h"
 #include "command.h"
 #include "actor.h"
 #include "gamemap.h"
-
-struct Vector2i {
-	int x;
-	int y;
-};
 
 class Command_Move : public Command {
 public:

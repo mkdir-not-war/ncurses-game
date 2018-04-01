@@ -6,7 +6,8 @@
 
 #include "command.h"
 #include "command_move.h"
-#include "command_describetile.h"
+#include "commandtile_describe.h"
+#include "commandtile_confirm.h"
 #include "actor.h"
 #include "gamemap.h"
 
@@ -29,14 +30,20 @@ private:
 	//Command* _key_home;
 	//Command* _key_end;
 	//Command* _key_inc;
-	Command* _key_mouse_right;
-	//Command* _key_mouse_left;
+
+	CommandTile* _key_mouse_right;
+	CommandTile* _key_mouse_left;
+	
+	CommandTile_Confirm* _confirm_tile;
 
 	// get rid of this var once gamestates are made 
 	// with subclasses of inputhandler (strategy pattern)
 	bool _help;
 	bool _confirm_input;
 	bool _try_again;
+
+	int meventx;
+	int meventy;
 };
 
 #endif

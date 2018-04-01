@@ -1,9 +1,9 @@
-#include "command_describetile.h"
+#include "commandtile_describe.h"
 
-Command_DescribeTile::Command_DescribeTile(GameMap& map) : _map(map) {}
-Command_DescribeTile::~Command_DescribeTile() {}
+CommandTile_Describe::CommandTile_Describe(GameMap& map) : _map(map) {}
+CommandTile_Describe::~CommandTile_Describe() {}
 
-void Command_DescribeTile::execute(int x, int y) {
+bool CommandTile_Describe::execute(int x, int y) {
 	int r = _map.row() + y;
 	int c = _map.col() + x;
 	int width = _map.width();
@@ -27,8 +27,10 @@ void Command_DescribeTile::execute(int x, int y) {
 		std::string s = buff;
 
 		TextConsole::print(s);
+		return false;
 	}
 	else {
+		/*
 		desc = "is too far to observe.";
 		char buff[TEXTLOG_WORD_BUFFERSIZE];
 		snprintf(buff, sizeof(buff), "<%d, %d> %s", 
@@ -36,11 +38,13 @@ void Command_DescribeTile::execute(int x, int y) {
 		std::string s = buff;
 
 		TextConsole::print(s);
+		*/
+		return true; // try again
 	}
 
 	
 }
 
-std::string Command_DescribeTile::toString(std::string input) const {
+std::string CommandTile_Describe::toString(std::string input) const {
 	return input + ": describe tile @ <x, y>";
 }

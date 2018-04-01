@@ -59,6 +59,7 @@ public:
 	int width() const;
 
 	Prop* getProp(int, int);
+	Prop* setProp(int, int, Prop*);
 	//bool getActor(int, int, Actor&);
 };
 

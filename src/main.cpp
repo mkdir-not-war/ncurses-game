@@ -23,7 +23,7 @@ void game_loop(GameMap& map,
 		input.handleInput(ch);
 
 		// update game 
-
+		//TextConsole::print("turn");
 
 		// render game
 		map.refresh();

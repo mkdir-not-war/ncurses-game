@@ -1,18 +1,18 @@
 #ifndef COMMAND_DESCRIBETILE_H_7849037890
 #define COMMAND_DESCRIBETILE_H_7849037890
 
-#include "command.h"
+#include "commandtile.h"
 #include "actor.h"
 #include "prop.h"
 #include "gamemap.h"
 #include "textconsole.h"
 
-class Command_DescribeTile : public Command {
+class CommandTile_Describe : public CommandTile {
 public:
-	Command_DescribeTile(GameMap&);
-	~Command_DescribeTile();
+	CommandTile_Describe(GameMap&);
+	~CommandTile_Describe();
 
-	void execute(int, int);
+	bool execute(int, int);
 	std::string toString(std::string) const;
 
 private:

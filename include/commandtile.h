@@ -1,14 +1,14 @@
-#ifndef COMMAND_H_98fd78gs
-#define COMMAND_H_98fd78gs
+#ifndef COMMANDTILE_H_98fd78gsvbn
+#define COMMANDTILE_H_98fd78gsvbn
 
 #include <string>
 #include <stdarg.h>
 
-class Command {
+class CommandTile {
 public:
-	virtual ~Command() {}
+	virtual ~CommandTile() {}
 
-	virtual void execute() = 0;
+	virtual bool execute(int x, int y) = 0;
 
 	// used for help ('h' or 'H' keys)
 	virtual std::string toString(std::string input) const = 0;
