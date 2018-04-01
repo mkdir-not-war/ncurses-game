@@ -6,13 +6,16 @@ GameMap::GameMap(Frame& mapframe, Frame& viewport, Actor& player) :
 	_prop_ground = new Prop('.', true,
 		std::string("ground"));
 	_prop_wall = new Prop('#', false,
-		std::string("a wall"));
+		std::string("wall"));
 	_prop_ice = new Prop('S', false,
 		std::string("ice"));
 	_prop_water = new Prop('~', false,
 		std::string("water"));
 
 	_prop_null = new Prop();
+
+	_mapactors.len = 1;
+	_mapactors.actors[0] = &player;
 }
 
 GameMap::~GameMap() {
@@ -148,15 +151,13 @@ Prop* GameMap::setProp(int row, int col, Prop* newprop) {
 	return temp;
 }
 
-/*
-bool GameMap::getActor(int row, int col, Actor& a) {
-	for (int i=0; i<MAXACTORS; i++) {
-		if (_mapactors[i].row() == row &&
-			_mapactors[i].col() == col) {
-			a = _mapactors[i];
-			return true;
+
+Actor* GameMap::getActor(int row, int col) {
+	for (int i=0; i<_mapactors.len; i++) {
+		if (_mapactors.actors[i]->row() == row &&
+			_mapactors.actors[i]->col() == col) {
+			return _mapactors.actors[i];
 		}
 	}
-	return false;
+	return NULL;
 }
-*/

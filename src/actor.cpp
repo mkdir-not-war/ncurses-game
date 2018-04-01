@@ -5,8 +5,8 @@ Actor::Actor() :
 {
 }
 
-Actor::Actor(char symbol, int row, int col) :
-	_symbol(symbol), _row(row), _col(col)
+Actor::Actor(char symbol, int row, int col, std::string desc) :
+	_symbol(symbol), _row(row), _col(col), _description(desc)
 {
 }
 
@@ -25,4 +25,8 @@ int Actor::col() const {
 
 char Actor::symbol() const {
 	return _symbol;
+}
+
+std::string Actor::description() const {
+	return _description;
 }

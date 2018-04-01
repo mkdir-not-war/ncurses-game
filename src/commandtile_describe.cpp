@@ -18,12 +18,23 @@ bool CommandTile_Describe::execute(int x, int y) {
 
 	Prop* prop = _map.getProp(row, col);
 
-	const char* desc;
+	const char* pdesc;
+	const char* adesc;
 	if (prop) {
-		desc = prop->description().c_str();
-		char buff[TEXTLOG_WORD_BUFFERSIZE];
-		snprintf(buff, sizeof(buff), "There is %s @ <%d, %d>", 
-			desc, r, c);
+		Actor* actor = _map.getActor(row, col);
+
+		// putting this in an else statement fucks it up. idk
+		std::string ad = "Nothing";
+		adesc = ad.c_str();
+		if (actor) {
+			adesc = actor->description().c_str();
+		}
+
+		pdesc = prop->description().c_str();
+		
+		char buff[TEXTLOG_WORD_BUFFERSIZE*2];
+		snprintf(buff, sizeof(buff), "%s is on the %s @ <%d, %d>", 
+			adesc, pdesc, r, c);
 		std::string s = buff;
 
 		TextConsole::print(s);

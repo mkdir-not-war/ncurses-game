@@ -10,7 +10,7 @@
 
 #define MAPWIDTH	128
 #define MAPHEIGHT	128
-#define MAXACTORS	32
+#define MAXACTORS	31
 
 class GameMap {
 
@@ -18,7 +18,15 @@ struct PropMap {
 	Prop* props[MAPWIDTH*MAPHEIGHT];
 };
 
+struct ActorMap {
+	int len;
+	Actor* actors[MAXACTORS];
+}; // 1 + 31 bytes = 32 bytes
+
 private:
+	PropMap _mapprops;
+	ActorMap _mapactors;
+
 	Frame& _viewport;
 	Frame& _mapframe;
 
@@ -29,14 +37,10 @@ private:
 
 	Prop* _prop_null;
 
-	PropMap _mapprops;
-	//Actor _mapactors[MAXACTORS];
-
 	/*
 	* The player in this context is
 	* the only actor that acts specifically according 
-	* to how input is entered in the client. The player
-	* is not saved inside the _mapactors array.
+	* to how input is entered in the client. 
 	*/
 	Actor& _player; 
 
@@ -60,6 +64,7 @@ public:
 
 	Prop* getProp(int, int);
 	Prop* setProp(int, int, Prop*);
+	Actor* getActor(int, int);
 	//bool getActor(int, int, Actor&);
 };
 

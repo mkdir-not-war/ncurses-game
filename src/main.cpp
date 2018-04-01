@@ -67,7 +67,9 @@ int main() {
 
 	// Initialize game objects and map /////////////////////
 	// create player actor
-	Actor player('@', game_frame.height()/2, game_frame.width()/2);
+	Actor player('@', 
+		game_frame.height()/2, game_frame.width()/2, 
+		"The player");
 	GameMap gamemap(game_frame, viewport, player);
 	gamemap.loadMap();
 

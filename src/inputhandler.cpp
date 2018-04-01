@@ -36,7 +36,8 @@ void InputHandler::printHelp() {
 	TextConsole::print(_key_right->toString("RIGHT"));
 
 	TextConsole::print(_key_mouse_right->toString("MOUSE R CLICK"));
-	TextConsole::print(_key_mouse_left->toString("MOUSE L CLICK"));
+	//TextConsole::print(_key_mouse_left->toString("MOUSE L CLICK"));
+	TextConsole::print("left click: cast magic");
 
 	TextConsole::print("");
 	TextConsole::print("Press h to exit help.");
