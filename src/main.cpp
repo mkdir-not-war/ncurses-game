@@ -18,7 +18,7 @@ void game_loop(GameMap& map,
 	while (1) {
 		// process input (block; turn based)
 		ch = getch();
-		if (ch == 'q' || ch == 'Q') exit(0);
+		if (ch == 'q' || ch == 'Q' || ch == KEY_RESIZE) exit(0);
 
 		input.handleInput(ch);
 
@@ -40,12 +40,19 @@ int main() {
 	std::string titleinfo = thanks +
 		"Press any key to continue.\n" + 
 		"Press h for help at any time.\n" +
-		"Press q to quit.";
+		"Press q to quit.\n\n\n\n" +
+		"WARNING: resizing the window will exit the application.";
 	printw(titleinfo.c_str());
 
 	// starting key press
 	int ch = getch();
-	if (ch == 'q' || ch == 'Q') return 0;
+	if (ch == 'q' || ch == 'Q' || ch == KEY_RESIZE) {
+		return 0;
+	}
+	else {
+		clear();
+		refresh();
+	}
 
 	// create game map window and output window
 	float game_frame_width_ratio = 0.6;
