@@ -9,22 +9,17 @@ CommandTile_Confirm::~CommandTile_Confirm() {
 }
 
 bool CommandTile_Confirm::execute(int x, int y) {
-	int r = _map.row() + y;
-	int c = _map.col() + x;
-	int width = _map.width();
-	int height = _map.height();
-
-	int row = r;
-	int col = c;
-
-	if (x >= width || y >= height) {
-		row = -1; col = -1;
+	int row, col;
+	bool inbounds = _map.getWorldCoord(x, y, col, row);
+	if (!inbounds) {
+		return false;
 	}
 
 	Prop* prop = _map.getProp(row, col);
 	Actor* actor = _map.getActor(row, col);
+	bool magic = _map.getMagic(row, col);
 
-	if (prop && !actor) {
+	if (prop && !actor && !magic) {
 		TextConsole::print("Cast magic? (y/n)");
 		_tempprop = prop;
 		_map.setProp(row, col, _confirmprop);

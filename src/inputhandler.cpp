@@ -1,6 +1,7 @@
 #include "inputhandler.h"
 
-InputHandler::InputHandler(Actor& player, GameMap& map) :
+InputHandler::InputHandler(
+	Actor& player, GameMap& map, MagicHandler& mh) :
 	_try_again(false), _help(false), _confirm_input(false) {
 	_key_up = new Command_Move(0, -1, player, map);
 	_key_down = new Command_Move(0, 1, player, map);
@@ -10,7 +11,7 @@ InputHandler::InputHandler(Actor& player, GameMap& map) :
 	//_key_end = new Command_
 	//_key_inc = new Command_
 	_key_mouse_right = new CommandTile_Describe(map);
-	_key_mouse_left = _key_mouse_right;
+	_key_mouse_left = new CommandTile_Magic(mh, map);
 	_confirm_tile = new CommandTile_Confirm(map);
 }
 
@@ -23,7 +24,7 @@ InputHandler::~InputHandler() {
 	//delete _key_end;
 	//delete _key_inc;
 	delete _key_mouse_right;
-	//delete _key_mouse_left;
+	delete _key_mouse_left;
 	delete _confirm_tile;
 }
 
@@ -36,8 +37,7 @@ void InputHandler::printHelp() {
 	TextConsole::print(_key_right->toString("RIGHT"));
 
 	TextConsole::print(_key_mouse_right->toString("MOUSE R CLICK"));
-	//TextConsole::print(_key_mouse_left->toString("MOUSE L CLICK"));
-	TextConsole::print("left click: cast magic");
+	TextConsole::print(_key_mouse_left->toString("MOUSE L CLICK"));
 
 	TextConsole::print("");
 	TextConsole::print("Press h to exit help.");
@@ -76,8 +76,7 @@ void InputHandler::handleInput(int ch) {
 				if (ch == 'y' || ch == 'Y') {
 					_confirm_tile->confirm();
 					_confirm_input = false;
-					TextConsole::print("Player casts magic.");
-					//_key_mouse_left->execute(meventx, meventy);
+					_key_mouse_left->execute(meventx, meventy);
 				}
 				else if (ch == 'n' || ch == 'N') {
 					_confirm_tile->confirm();
@@ -107,6 +106,8 @@ void InputHandler::handleInput(int ch) {
 							// will return true if outside map
 							_confirm_input = _confirm_tile->execute(
 								event.x, event.y);
+							// save the input state for casting magic 
+							// if confirmed on next input
 							meventx = event.x;
 							meventy = event.y;
 							// checking input costs no turns

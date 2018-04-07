@@ -50,6 +50,7 @@ int main() {
 		return 0;
 	}
 	else {
+		// clear the title screen away
 		clear();
 		refresh();
 	}
@@ -81,8 +82,9 @@ int main() {
 	gamemap.loadMap();
 
 	// all handlers
+	MagicHandler magichandler;
 	TextConsole console(output_frame);
-	InputHandler input(player, gamemap);
+	InputHandler input(player, gamemap, magichandler);
 
 	// enter game loop
 	game_loop(gamemap, console, input);

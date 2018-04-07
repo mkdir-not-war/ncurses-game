@@ -4,16 +4,10 @@ CommandTile_Describe::CommandTile_Describe(GameMap& map) : _map(map) {}
 CommandTile_Describe::~CommandTile_Describe() {}
 
 bool CommandTile_Describe::execute(int x, int y) {
-	int r = _map.row() + y;
-	int c = _map.col() + x;
-	int width = _map.width();
-	int height = _map.height();
-
-	int row = r;
-	int col = c;
-
-	if (x >= width || y >= height) {
-		row = -1; col = -1;
+	int row, col;
+	bool inbounds = _map.getWorldCoord(x, y, col, row);
+	if (!inbounds) {
+		return false;
 	}
 
 	Prop* prop = _map.getProp(row, col);
@@ -22,6 +16,7 @@ bool CommandTile_Describe::execute(int x, int y) {
 	const char* adesc;
 	if (prop) {
 		Actor* actor = _map.getActor(row, col);
+		bool magic = _map.getMagic(row, col);
 
 		// putting this in an else statement fucks it up. idk
 		std::string ad = "Nothing";
@@ -29,12 +24,15 @@ bool CommandTile_Describe::execute(int x, int y) {
 		if (actor) {
 			adesc = actor->description().c_str();
 		}
+		else if (magic) {
+			adesc = "Lingering magic";
+		}
 
 		pdesc = prop->description().c_str();
 		
 		char buff[TEXTLOG_WORD_BUFFERSIZE*2];
 		snprintf(buff, sizeof(buff), "%s is on the %s @ <%d, %d>", 
-			adesc, pdesc, r, c);
+			adesc, pdesc, row, col);
 		std::string s = buff;
 
 		TextConsole::print(s);

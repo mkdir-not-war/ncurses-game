@@ -8,34 +8,48 @@
 
 #include "perlinnoise.h"
 
+#include "textconsole.h"
+
 #define MAPWIDTH	128
 #define MAPHEIGHT	128
 #define MAXACTORS	31
+
+#define MAGICCHAR	'+'
 
 class GameMap {
 
 struct PropMap {
 	Prop* props[MAPWIDTH*MAPHEIGHT];
-};
+}; // MAPWIDTH * MAPHEIGHT bytes = 16,384 bytes
 
 struct ActorMap {
 	int len;
 	Actor* actors[MAXACTORS];
 }; // 1 + 31 bytes = 32 bytes
 
+struct MagicMap {
+	bool magic[MAPWIDTH*MAPHEIGHT];
+}; // MAPWIDTH * MAPHEIGHT bits = 2048 bytes
+
 private:
 	PropMap _mapprops;
 	ActorMap _mapactors;
+	MagicMap _mapmagic;
 
 	Frame& _viewport;
 	Frame& _mapframe;
 
+	// move all these to a resource manager sometime
+	// since the same props will be used for each map
 	Prop* _prop_ground;
 	Prop* _prop_wall;
 	Prop* _prop_ice;
 	Prop* _prop_water;
+	Prop* _prop_fire;
+	Prop* _prop_wood;
 
 	Prop* _prop_null;
+	////////////////////////////////////////////////
 
 	/*
 	* The player in this context is
@@ -62,10 +76,14 @@ public:
 	int height() const;
 	int width() const;
 
-	Prop* getProp(int, int);
+	bool getWorldCoord(int, int, int&, int&);
+
+	Prop* getProp(int, int) const;
 	Prop* setProp(int, int, Prop*);
-	Actor* getActor(int, int);
+	Actor* getActor(int, int) const;
 	//bool getActor(int, int, Actor&);
+	bool getMagic(int, int) const;
+	bool setMagic(int, int, bool);
 };
 
 #endif

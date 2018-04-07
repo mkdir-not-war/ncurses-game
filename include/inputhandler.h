@@ -8,8 +8,10 @@
 #include "command_move.h"
 #include "commandtile_describe.h"
 #include "commandtile_confirm.h"
+#include "commandtile_magic.h"
 #include "actor.h"
 #include "gamemap.h"
+#include "magichandler.h"
 
 #define KEY_NUMPAD_ZERO		48
 #define KEY_NUMPAD_ONE		49
@@ -17,7 +19,7 @@
 class InputHandler {
 public:
 	// get player actor and frame
-	InputHandler(Actor&, GameMap&);
+	InputHandler(Actor&, GameMap&, MagicHandler&);
 	~InputHandler();
 	void handleInput(int);
 	void printHelp();

@@ -6,16 +6,26 @@ GameMap::GameMap(Frame& mapframe, Frame& viewport, Actor& player) :
 	_prop_ground = new Prop('.', true,
 		std::string("ground"));
 	_prop_wall = new Prop('#', false,
-		std::string("wall"));
-	_prop_ice = new Prop('S', false,
+		std::string("earthen wall"));
+	_prop_ice = new Prop('S', true,
 		std::string("ice"));
 	_prop_water = new Prop('~', false,
 		std::string("water"));
+	_prop_fire = new Prop('f', false,
+		std::string("fire"));
+	_prop_wood = new Prop('P', false,
+		std::string("large tree"));
 
 	_prop_null = new Prop();
 
 	_mapactors.len = 1;
 	_mapactors.actors[0] = &player;
+
+	for (int i=0; i<MAPWIDTH; i++) {
+		for (int j=0; j<MAPHEIGHT; j++) {
+			_mapmagic.magic[j*MAPWIDTH + i] = false;
+		}
+	}
 }
 
 GameMap::~GameMap() {
@@ -23,6 +33,8 @@ GameMap::~GameMap() {
 	delete _prop_wall;
 	delete _prop_ice;
 	delete _prop_water;
+	delete _prop_fire;
+	delete _prop_wood;
 
 	delete _prop_null;
 }
@@ -32,11 +44,17 @@ void GameMap::refresh() {
 	_mapframe.fclear();
 
 	// for each prop in gamemap,
-	// add the prop to the mapframe
+	// add the prop to the mapframe unless magic covers it
 	for (int i=0; i<_mapframe.width(); i++) {
 		for (int j=0; j<_mapframe.height(); j++) {
 			Prop* p = getProp(i, j);
-			_mapframe.add(p->symbol(), i, j);
+			bool magic = getMagic(i, j);
+			if (magic) {
+				_mapframe.add(MAGICCHAR, i, j);
+			}
+			else {
+				_mapframe.add(p->symbol(), i, j);
+			}
 		}
 	}
 
@@ -134,7 +152,23 @@ int GameMap::width() const {
 	return _viewport.width();
 }
 
-Prop* GameMap::getProp(int row, int col) {
+bool GameMap::getWorldCoord(int meventx, int meventy, int& x, int& y) {
+	int r = row() + meventy;
+	int c = col() + meventx;
+
+	int row = r;
+	int col = c;
+
+	if (meventx >= width() || meventy >= height()) {
+		return false;
+	}
+
+	x = c;
+	y = r;
+	return true;
+}
+
+Prop* GameMap::getProp(int row, int col) const {
 	if (row < 0 || col < 0) 
 		return NULL;
 	
@@ -152,7 +186,7 @@ Prop* GameMap::setProp(int row, int col, Prop* newprop) {
 }
 
 
-Actor* GameMap::getActor(int row, int col) {
+Actor* GameMap::getActor(int row, int col) const {
 	for (int i=0; i<_mapactors.len; i++) {
 		if (_mapactors.actors[i]->row() == row &&
 			_mapactors.actors[i]->col() == col) {
@@ -160,4 +194,22 @@ Actor* GameMap::getActor(int row, int col) {
 		}
 	}
 	return NULL;
+}
+
+bool GameMap::getMagic(int row, int col) const {
+	return _mapmagic.magic[row*MAPWIDTH + col];
+}
+
+bool GameMap::setMagic(int row, int col, bool magic) {
+	if (row < 0 || col < 0)
+		return false;
+
+	bool magicrc = _mapmagic.magic[row*MAPWIDTH + col];
+
+	if (magicrc == magic)
+		return false;
+	
+	_mapmagic.magic[row*MAPWIDTH + col] = magic;
+
+	return true;
 }
