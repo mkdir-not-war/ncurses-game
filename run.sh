@@ -1,12 +1,27 @@
 #!/bin/bash
 # run the game
 
+USRDIR=/home/$USER
 GAMEDIR=./bin
+FONTPATH=./res/fonts/PressStart2P-Regular.ttf
 
-if [ -e "$GAMEDIR/client" ] 
+# check for fonts
+if [ -e "$USRDIR/.fonts" ];
 then
-	xterm -fa 'Monospace' -fs 18 -e $GAMEDIR/client
+	if ! [ -e "$USRDIR/.fonts/PressStart2P-Regular.ttf" ];
+	then
+		sudo cp "$FONTPATH" "$USRDIR/.fonts";
+	fi
 else
-	make
-	xterm -fa 'Monospace' -fs 18 -e $GAMEDIR/client
+	sudo mkdir -p "$USRDIR/.fonts";
+	sudo cp "$FONTPATH" "$USRDIR/.fonts";
+fi
+
+# check for game binary
+if [ -e "$GAMEDIR/client" ];
+then
+	xterm -geometry 60x30 -fa 'PressStart2P-Regular' -fs 12 -e $GAMEDIR/client;
+else
+	make;
+	xterm -geometry 60x30 -fa 'PressStart2P-Regular' -fs 12 -e $GAMEDIR/client;
 fi

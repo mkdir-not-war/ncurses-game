@@ -56,18 +56,27 @@ int main() {
 	}
 
 	// create game map window and output window
-	float game_frame_width_ratio = 0.6;
+	float game_frame_width_ratio = 0.5;
+	float game_frame_height_ratio = 0.8;
 	float output_frame_width_ratio = 1.0 - game_frame_width_ratio;
 
 	Frame game_frame(MAPHEIGHT, 
 		MAPWIDTH, 
 		0, 0);
-	Frame viewport(game_frame, scr.height(), 
+	Frame viewport(game_frame, 
+		scr.height() * game_frame_height_ratio, 
 		scr.width() * game_frame_width_ratio, 
 		0, 0);
 	Frame output_frame(scr.height(), 
 		scr.width() * output_frame_width_ratio, 
 		1, (scr.width() * game_frame_width_ratio) + 1);
+	/*
+	Frame hud_frame(
+		scr.height() * (1.0 - game_frame_height_ratio), 
+		scr.width() * game_frame_width_ratio, 
+		scr.height() * game_frame_height_ratio, 
+		0;
+	*/
 
 	// get mouse input on map frame window
 	keypad(viewport.win(), true);

@@ -8,13 +8,13 @@
 
 #include "perlinnoise.h"
 
-#include "textconsole.h"
+//#include "textconsole.h"
 
 #define MAPWIDTH	128
 #define MAPHEIGHT	128
 #define MAXACTORS	31
 
-#define MAGICCHAR	'+'
+#define MAGICCHAR	'*'
 
 class GameMap {
 
