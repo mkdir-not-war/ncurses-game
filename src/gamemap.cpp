@@ -213,3 +213,48 @@ bool GameMap::setMagic(int row, int col, bool magic) {
 
 	return true;
 }
+
+void GameMap::removeDeadActors() {
+	for (int i=0; i<_mapactors.len; i++) {
+		int deadi = -1;
+		for (int i=0; i<_mapactors.len; i++) {
+			if (deadi < 0) {
+				if (_mapactors.actors[i] && 
+					!_mapactors.actors[i]->alive()) {
+					_mapactors.actors[deadi] = NULL;
+					deadi = i;
+				}
+				else if (i == _mapactors.len-1) {
+					// no more dead actors found in whole list
+					return;
+				}
+			}
+			else {
+				if (_mapactors.actors[i]->alive()) {
+					_mapactors.actors[deadi] = _mapactors.actors[i];
+					_mapactors.actors[i] = NULL;
+				}
+				else if (i == _mapactors.len-1) {
+					// no alive actors found after dead actor
+				}
+			}
+		}
+	}
+}
+
+void GameMap::updateActors() {
+	// do AI here?
+
+	// decrement hunger
+	for (int i=0; i<_mapactors.len; i++) {
+		_mapactors.actors[i]->decHunger(1);
+	}
+
+	// if dead, remove from map and drop loot
+	for (int i=0; i<_mapactors.len; i++) {
+		if (!_mapactors.actors[i]->alive()) {
+			_mapactors.actors[i] = NULL;
+		}
+	}
+	removeDeadActors();
+}

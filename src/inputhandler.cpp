@@ -41,6 +41,7 @@ void InputHandler::printHelp() {
 
 	TextConsole::print("");
 	TextConsole::print("Press h to exit help.");
+	TextConsole::print("Press q to quit the game.");
 }
 
 void InputHandler::handleInput(int ch) {

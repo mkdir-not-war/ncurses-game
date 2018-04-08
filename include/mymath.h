@@ -7,6 +7,7 @@ struct Vector2i {
 };
 
 class MyMath {
+public:
 	static int manhattan(Vector2i pos1, Vector2i pos2) {
 		int dx = pos1.x - pos2.x;
 		if (dx < 0)

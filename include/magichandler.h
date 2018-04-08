@@ -8,21 +8,22 @@
 
 #include "textconsole.h"
 
-#define AOETILES1			12
+#define AOETILES			12
 #define MAGICPERCOMBO		5
 
 struct AoE {
-	Vector2i tiles[AOETILES1]; // 12 * (4 * 2) = 96
-}; // 96
+	int len;
+	Vector2i tiles[AOETILES]; // 12 * (4 * 2) = 96
+	char element; // 1
+}; // 97
 
 struct Combo {
 	// vectors from a "center" tile, which is guaranteed included
 	Vector2i tiles[MAGICPERCOMBO]; // 5 * (4 * 2) = 40
-	AoE aoe; // 96
-	char element; // 1
+	AoE aoe; // 97
 	bool rotatable; // <1
 	bool reversable; // <1
-}; // 136 + <=2 + 1 ~= 138
+}; // 137 + <=2 ~= 138
 
 struct AllCombos {
 	Combo ice;
@@ -42,6 +43,7 @@ public:
 	~MagicHandler();
 
 	void castMagic(int, int, GameMap&);
+	void dealDamage(int, int, AoE, GameMap&);
 };
 
 #endif

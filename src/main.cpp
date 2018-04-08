@@ -7,9 +7,18 @@
 #include "gamemap.h"
 #include "textconsole.h"
 
+void update(Actor& player, GameMap& map) {
+	if (!player.alive()) {
+		// end game
+		exit(0);
+	}
+	map.updateActors();
+}
+
 void game_loop(GameMap& map, 
 	TextConsole& console,
-	InputHandler& input) {
+	InputHandler& input,
+	Actor& player) {
 
 	map.refresh();
 	console.refresh();
@@ -23,7 +32,7 @@ void game_loop(GameMap& map,
 		input.handleInput(ch);
 
 		// update game 
-		//TextConsole::print("turn");
+		update(player, map);
 
 		// render game
 		map.refresh();
@@ -96,7 +105,7 @@ int main() {
 	InputHandler input(player, gamemap, magichandler);
 
 	// enter game loop
-	game_loop(gamemap, console, input);
+	game_loop(gamemap, console, input, player);
 	//game_loop(&player, &game_frame, &viewport, &output_frame);
 
 	return 0;

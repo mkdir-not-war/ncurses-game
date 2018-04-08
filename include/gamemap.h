@@ -14,6 +14,7 @@
 #define MAPHEIGHT	128
 #define MAXACTORS	31
 
+// maybe move this to a "magicconstants" header
 #define MAGICCHAR	'*'
 
 class GameMap {
@@ -60,6 +61,8 @@ private:
 
 	void genPerlin(const unsigned int&);
 
+	void removeDeadActors();
+
 public:
 	GameMap(Frame&, Frame&, Actor&);
 	~GameMap();
@@ -84,6 +87,8 @@ public:
 	//bool getActor(int, int, Actor&);
 	bool getMagic(int, int) const;
 	bool setMagic(int, int, bool);
+
+	void updateActors();
 };
 
 #endif
