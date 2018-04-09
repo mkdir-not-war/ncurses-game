@@ -6,6 +6,7 @@
 #include "inputhandler.h"
 #include "gamemap.h"
 #include "textconsole.h"
+#include "hud.h"
 
 void update(Actor& player, GameMap& map) {
 	if (!player.alive()) {
@@ -18,10 +19,12 @@ void update(Actor& player, GameMap& map) {
 void game_loop(GameMap& map, 
 	TextConsole& console,
 	InputHandler& input,
+	HUD& hud,
 	Actor& player) {
 
 	map.refresh();
 	console.refresh();
+	hud.refresh();
 
 	int ch;
 	while (1) {
@@ -37,6 +40,7 @@ void game_loop(GameMap& map,
 		// render game
 		map.refresh();
 		console.refresh();
+		hud.refresh();
 	}
 }
 
@@ -79,13 +83,16 @@ int main() {
 	Frame output_frame(scr.height(), 
 		scr.width() * output_frame_width_ratio, 
 		1, (scr.width() * game_frame_width_ratio) + 1);
-	/*
-	Frame hud_frame(
+	Frame player_hud_frame(
 		scr.height() * (1.0 - game_frame_height_ratio), 
-		scr.width() * game_frame_width_ratio, 
+		scr.width() * game_frame_width_ratio / 2.0, 
 		scr.height() * game_frame_height_ratio, 
-		0;
-	*/
+		0);
+	Frame actors_hud_frame(
+		scr.height() * (1.0 - game_frame_height_ratio), 
+		scr.width() * game_frame_width_ratio / 2.0, 
+		scr.height() * game_frame_height_ratio, 
+		scr.width() * game_frame_width_ratio / 2.0);
 
 	// get mouse input on map frame window
 	keypad(viewport.win(), true);
@@ -95,17 +102,18 @@ int main() {
 	// create player actor
 	Actor player('@', 
 		game_frame.height()/2, game_frame.width()/2, 
-		"The player");
+		"The hero");
 	GameMap gamemap(game_frame, viewport, player);
-	gamemap.loadMap();
 
 	// all handlers
 	MagicHandler magichandler;
 	TextConsole console(output_frame);
+	HUD hud(player_hud_frame, actors_hud_frame, gamemap, player);
 	InputHandler input(player, gamemap, magichandler);
 
 	// enter game loop
-	game_loop(gamemap, console, input, player);
+	gamemap.loadMap();
+	game_loop(gamemap, console, input, hud, player);
 	//game_loop(&player, &game_frame, &viewport, &output_frame);
 
 	return 0;

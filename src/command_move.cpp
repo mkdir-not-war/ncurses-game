@@ -14,7 +14,7 @@ Command_Move::~Command_Move() {
 void Command_Move::execute() {
 	int c = _player.col() + _dir.x;
 	int r = _player.row() + _dir.y;
-	_map.addActor(_player, r, c);
+	_map.moveActor(_player, r, c);
 }
 
 std::string Command_Move::toString(std::string input) const {

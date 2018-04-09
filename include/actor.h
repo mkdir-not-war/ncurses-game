@@ -22,6 +22,7 @@ private:
 
 	// state information
 	bool _alive;
+	bool _hostile;
 	int _health, _hunger;
 	char _resistance, _weakness; 
 	
@@ -33,7 +34,7 @@ public:
 	Actor();
 	Actor(char, int, int, std::string desc="Basic Actor",
 		char resist=UNUSEDCHAR, char weak=UNUSEDCHAR,
-		int numkeys=0);
+		int numkeys=0, bool hostile=false);
 
 	void moveto(int, int);
 
@@ -52,6 +53,7 @@ public:
 	int health() const;
 	int hunger() const;
 	int smallkeys() const;
+	bool hostile() const;
 };
 
 #endif

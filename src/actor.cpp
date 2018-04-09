@@ -5,7 +5,7 @@ Actor::Actor() : Actor(' ', -1, -1)
 }
 
 Actor::Actor(char symbol, int row, int col, std::string desc,
-	char resist, char weak, int numkeys) :
+	char resist, char weak, int numkeys, bool hostile) :
 	_symbol(symbol), 
 	_row(row), _col(col), 
 	_description(desc),
@@ -14,7 +14,8 @@ Actor::Actor(char symbol, int row, int col, std::string desc,
 	_hunger(MAXHUNGER),
 	_resistance(resist),
 	_weakness(weak),
-	_smallkeys(numkeys)
+	_smallkeys(numkeys),
+	_hostile(hostile)
 {
 }
 
@@ -53,6 +54,10 @@ int Actor::hunger() const {
 
 int Actor::smallkeys() const {
 	return _smallkeys;
+}
+
+bool Actor::hostile() const {
+	return _hostile;
 }
 
 void Actor::incHunger(int amt) {

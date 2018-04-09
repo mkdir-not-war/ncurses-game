@@ -7,12 +7,14 @@
 #include "prop.h"
 
 #include "perlinnoise.h"
+#include "textconsole.h"
 
 //#include "textconsole.h"
 
 #define MAPWIDTH	128
 #define MAPHEIGHT	128
 #define MAXACTORS	31
+#define MAXENEMIES	4
 
 // maybe move this to a "magicconstants" header
 #define MAGICCHAR	'*'
@@ -70,8 +72,13 @@ public:
 	void refresh();
 	void loadMap();
 
-	void addActor(Actor&);
+	void addActor(char, int, int, bool hostile=false,
+		std::string desc="Basic Actor",
+		char resist=UNUSEDCHAR, char weak=UNUSEDCHAR,
+		int numkeys=0);
 	void addActor(Actor&, int, int);
+	void moveActor(Actor&);
+	bool moveActor(Actor&, int, int);
 
 	// maybe combine these into a struct later??
 	int row() const;
@@ -84,11 +91,11 @@ public:
 	Prop* getProp(int, int) const;
 	Prop* setProp(int, int, Prop*);
 	Actor* getActor(int, int) const;
-	//bool getActor(int, int, Actor&);
 	bool getMagic(int, int) const;
 	bool setMagic(int, int, bool);
 
 	void updateActors();
+	void getEnemies(Actor**, int&);
 };
 
 #endif

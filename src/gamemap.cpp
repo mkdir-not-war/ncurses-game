@@ -37,6 +37,10 @@ GameMap::~GameMap() {
 	delete _prop_wood;
 
 	delete _prop_null;
+
+	for (int i=1; i<_mapactors.len; i++) {
+		delete _mapactors.actors[i];
+	}
 }
 
 void GameMap::refresh() {
@@ -60,14 +64,12 @@ void GameMap::refresh() {
 
 	// next, for each actor in gamemap,
 	// add the actor to the mapframe
-	/*
-	for (int i=0; i<MAXACTORS; i++) {
+	for (int i=0; i<_mapactors.len; i++) {
 		_mapframe.add(
-			_mapactors[i].symbol(), 
-			_mapactors[i].row(), 
-			_mapactors[i].col());
-	}
-	*/
+			_mapactors.actors[i]->symbol(), 
+			_mapactors.actors[i]->row(), 
+			_mapactors.actors[i]->col());
+	}	
 
 	// add the player
 	_mapframe.add(_player.symbol(), _player.row(), _player.col());
@@ -80,14 +82,31 @@ void GameMap::refresh() {
 void GameMap::loadMap() {
 	genPerlin(257);
 	//_mapframe.fillwindow();
-	addActor(_player);
+	addActor(_player, _player.row(), _player.col());
+	addActor('&', _player.row()+1, _player.col()+1, true);
 }
 
-void GameMap::addActor(Actor& a) {
-	addActor(a, a.row(), a.col());
+void GameMap::addActor(char symbol, int row, int col, bool hostile,
+	std::string desc,
+	char resist, char weak, int numkeys) {
+	if (_mapactors.len < MAXACTORS) {
+		Actor* a = new Actor(
+			symbol, row, col, desc, resist, weak, numkeys, hostile);
+		_mapactors.actors[_mapactors.len] = a;
+		_mapactors.len++;
+		moveActor(*a, row, col);
+	}
 }
 
 void GameMap::addActor(Actor& a, int row, int col) {
+	if (_mapactors.len < MAXACTORS) {
+		_mapactors.actors[_mapactors.len] = &a;
+		_mapactors.len++;
+		moveActor(a, row, col);
+	}
+}
+
+bool GameMap::moveActor(Actor& a, int row, int col) {
 	// if in the bounds of the map
 	if ((row>=0 && row<_mapframe.height()) && 
 		(col>=0 && col<_mapframe.width())) {
@@ -95,10 +114,12 @@ void GameMap::addActor(Actor& a, int row, int col) {
 		if (getProp(row, col)->permeable()) {
 			// confirm to the actor that they have moved
 			a.moveto(row, col); 
+			return true;
 		}
 		else {
 			// not permeable, do nothing? wasted turn?
 			// (Pokemon plays a noise.)
+			return false;
 		}
 	}
 }
@@ -250,6 +271,16 @@ void GameMap::updateActors() {
 		_mapactors.actors[i]->decHunger(1);
 	}
 
+	if (_player.hunger() == 50) {
+		TextConsole::print("The hero's stomach grumbles...");
+	}
+	else if (_player.hunger() == 20) {
+		TextConsole::print("The hero's is starving!");
+	}
+	else if (_player.hunger() == 5) {
+		TextConsole::print("The hero's vision fades...");
+	}
+
 	// if dead, remove from map and drop loot
 	for (int i=0; i<_mapactors.len; i++) {
 		if (!_mapactors.actors[i]->alive()) {
@@ -257,4 +288,19 @@ void GameMap::updateActors() {
 		}
 	}
 	removeDeadActors();
+}
+
+void GameMap::getEnemies(Actor** enemies, int& len) {
+	// never more than 6 enemies, pls,
+	// or else won't be able to display them all
+
+	int num = 0;
+
+	for (int i=0; i<_mapactors.len; i++) {
+		if (_mapactors.actors[i]->hostile()) {
+			enemies[num++] = _mapactors.actors[i];
+		}
+	}
+
+	len = num;
 }

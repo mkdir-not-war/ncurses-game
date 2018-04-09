@@ -31,7 +31,7 @@ public:
 	void erase(int, int);
 	void fclear();
 	void add(char, int, int);
-	void add(char*, int, int, int);
+	void add(const char*, int, int, int);
 	void center(int, int);
 	void refresh();
 	void move(int, int);
