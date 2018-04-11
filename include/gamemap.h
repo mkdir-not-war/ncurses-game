@@ -94,7 +94,7 @@ public:
 	bool getMagic(int, int) const;
 	bool setMagic(int, int, bool);
 
-	void updateActors();
+	void updateActors(int);
 	void getEnemies(Actor**, int&);
 };
 

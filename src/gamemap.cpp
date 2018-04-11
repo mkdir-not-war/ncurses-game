@@ -18,9 +18,6 @@ GameMap::GameMap(Frame& mapframe, Frame& viewport, Actor& player) :
 
 	_prop_null = new Prop();
 
-	_mapactors.len = 1;
-	_mapactors.actors[0] = &player;
-
 	for (int i=0; i<MAPWIDTH; i++) {
 		for (int j=0; j<MAPHEIGHT; j++) {
 			_mapmagic.magic[j*MAPWIDTH + i] = false;
@@ -266,30 +263,27 @@ void GameMap::removeDeadActors() {
 	}
 }
 
-void GameMap::updateActors() {
+void GameMap::updateActors(int turn) {
 	// do AI here?
 
 	// decrement hunger
-	for (int i=0; i<_mapactors.len; i++) {
-		_mapactors.actors[i]->decHunger(1);
-	}
+	if (turn % 4 == 0) {
+		for (int i=1; i<_mapactors.len; i++) {
+			_mapactors.actors[i]->decHunger(1);
+		}
 
-	if (_player.hunger() == 50) {
+		if (_player.hunger() == 50) {
 		TextConsole::print("The hero's stomach grumbles...");
-	}
-	else if (_player.hunger() == 20) {
-		TextConsole::print("The hero's is starving!");
-	}
-	else if (_player.hunger() == 5) {
-		TextConsole::print("The hero's vision fades...");
+		}
+		else if (_player.hunger() == 20) {
+			TextConsole::print("The hero's is starving!");
+		}
+		else if (_player.hunger() == 5) {
+			TextConsole::print("The hero's vision fades...");
+		}
 	}
 
 	// if dead, remove from map and drop loot
-	for (int i=0; i<_mapactors.len; i++) {
-		if (!_mapactors.actors[i]->alive()) {
-			_mapactors.actors[i] = NULL;
-		}
-	}
 	removeDeadActors();
 }
 

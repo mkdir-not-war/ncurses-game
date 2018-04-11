@@ -8,12 +8,15 @@
 #include "textconsole.h"
 #include "hud.h"
 
-void update(Actor& player, GameMap& map) {
+void update(Actor& player, GameMap& map, int& turn) {
 	if (!player.alive()) {
 		// end game
 		exit(0);
 	}
-	map.updateActors();
+	map.updateActors(turn++);
+	if (turn == 101) {
+		turn = 1;
+	}
 }
 
 void game_loop(GameMap& map, 
@@ -26,6 +29,7 @@ void game_loop(GameMap& map,
 	console.refresh();
 	hud.refresh();
 
+	int turn = 1;
 	int ch;
 	while (1) {
 		// process input (block; turn based)
@@ -35,7 +39,7 @@ void game_loop(GameMap& map,
 		input.handleInput(ch);
 
 		// update game 
-		update(player, map);
+		update(player, map, turn);
 
 		// render game
 		map.refresh();
@@ -85,14 +89,14 @@ int main() {
 		1, (scr.width() * game_frame_width_ratio) + 1);
 	Frame player_hud_frame(
 		scr.height() * (1.0 - game_frame_height_ratio), 
-		scr.width() * game_frame_width_ratio / 2.0, 
+		scr.width() * game_frame_width_ratio / 2.0 - 1.0, 
 		scr.height() * game_frame_height_ratio, 
 		0);
 	Frame actors_hud_frame(
 		scr.height() * (1.0 - game_frame_height_ratio), 
-		scr.width() * game_frame_width_ratio / 2.0, 
+		scr.width() * game_frame_width_ratio / 2.0 + 1.0, 
 		scr.height() * game_frame_height_ratio, 
-		scr.width() * game_frame_width_ratio / 2.0);
+		scr.width() * game_frame_width_ratio / 2.0 - 1.0);
 
 	// get mouse input on map frame window
 	keypad(viewport.win(), true);

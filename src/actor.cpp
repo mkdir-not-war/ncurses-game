@@ -69,9 +69,18 @@ void Actor::incHunger(int amt) {
 }
 
 void Actor::decHunger(int amt) {
-	int newhunger = _hunger - amt;
+	int newhunger = _hunger - amt - 50;
 	if (newhunger <= 0) {
-		_alive = false;
+		if (_health > 1) {
+			const char* desc = _description.c_str();
+			char buff[TEXTLOG_WORD_BUFFERSIZE*4];
+			snprintf(buff, sizeof(buff), 
+				"%s is dying of hunger!",
+				desc);
+			std::string s = buff;
+			TextConsole::print(s);
+		}
+		decHealth(1);
 	}
 	_hunger = newhunger;
 }
@@ -88,6 +97,13 @@ void Actor::decHealth(int amt) {
 	int newhealth = _health - amt;
 	if (newhealth <= 0) {
 		_alive = false;
+		const char* desc = _description.c_str();
+		char buff[TEXTLOG_WORD_BUFFERSIZE*4];
+		snprintf(buff, sizeof(buff), 
+			"%s died!",
+			desc);
+		std::string s = buff;
+		TextConsole::print(s);
 	}
 	_health = newhealth;
 }
