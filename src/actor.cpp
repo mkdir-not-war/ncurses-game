@@ -69,7 +69,7 @@ void Actor::incHunger(int amt) {
 }
 
 void Actor::decHunger(int amt) {
-	int newhunger = _hunger - amt - 50;
+	int newhunger = _hunger - amt;
 	if (newhunger <= 0) {
 		if (_health > 1) {
 			const char* desc = _description.c_str();

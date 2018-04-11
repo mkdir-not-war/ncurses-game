@@ -46,6 +46,7 @@ public:
 	static void print(std::string); 
 	static void push(std::string, bool wrap=true);
 	static void stash();
+	static void unstash();
 	static void clear();
 	static void pophead();
 	static void poptail();

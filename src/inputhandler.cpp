@@ -29,7 +29,7 @@ InputHandler::~InputHandler() {
 }
 
 void InputHandler::printHelp() {
-	TextConsole::clear(); // stash!!!!!
+	TextConsole::stash();
 
 	TextConsole::print(_key_up->toString("UP"));
 	TextConsole::print(_key_down->toString("DOWN"));
@@ -64,7 +64,7 @@ void InputHandler::handleInput(int ch) {
 		// check states to determine input response
 		if (_help) {
 			if (ch == 'h' || ch == 'H') {
-				TextConsole::clear();
+				TextConsole::unstash();
 				_help = false;
 				_try_again = true; // help costs no turns
 			}
