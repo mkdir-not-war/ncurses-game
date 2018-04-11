@@ -132,6 +132,9 @@ void TextConsole::push(std::string word, bool wrap) {
 	_log.len++;
 }
 
+void TextConsole::stash() {
+	
+}
 
 void TextConsole::clear() {
 	_log.len = 0;

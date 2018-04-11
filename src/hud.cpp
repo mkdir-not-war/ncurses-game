@@ -29,7 +29,7 @@ void HUD::refresh() {
 	_playerhudframe->add(
 		str.c_str(),
 		str.size(),
-		1, 0);
+		1, 1);
 
 	// player health
 	snprintf(buff, sizeof(buff), "HEALTH: %d", 
@@ -38,7 +38,7 @@ void HUD::refresh() {
 	_playerhudframe->add(
 		str.c_str(),
 		str.size(),
-		3, 0);
+		3, 1);
 
 	// player hunger
 	snprintf(buff, sizeof(buff), "HUNGER: %d", 
@@ -47,7 +47,7 @@ void HUD::refresh() {
 	_playerhudframe->add(
 		str.c_str(),
 		str.size(),
-		4, 0);
+		4, 1);
 
 	// number of small keys
 	int numkeys = _player.smallkeys();
@@ -57,7 +57,7 @@ void HUD::refresh() {
 		_playerhudframe->add(
 			str.c_str(),
 			str.size(),
-			6, 0);
+			6, 1);
 	}
 
 	// actors frame

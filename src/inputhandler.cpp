@@ -29,7 +29,7 @@ InputHandler::~InputHandler() {
 }
 
 void InputHandler::printHelp() {
-	TextConsole::clear();
+	TextConsole::clear(); // stash!!!!!
 
 	TextConsole::print(_key_up->toString("UP"));
 	TextConsole::print(_key_down->toString("DOWN"));

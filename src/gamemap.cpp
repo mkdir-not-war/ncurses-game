@@ -83,7 +83,10 @@ void GameMap::loadMap() {
 	genPerlin(257);
 	//_mapframe.fillwindow();
 	addActor(_player, _player.row(), _player.col());
+
+	// debugging with dummy enemies
 	addActor('&', _player.row()+1, _player.col()+1, true);
+	addActor('&', _player.row()+1, _player.col()+2, true);
 }
 
 void GameMap::addActor(char symbol, int row, int col, bool hostile,

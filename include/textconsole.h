@@ -28,6 +28,8 @@ struct textlog {
 class TextConsole {
 private:
 	static textlog _log;
+	static textlog _stash;
+	static textlog* _curr;
 	static Frame* _outputframe;
 
 	static void setFrame(Frame*);
@@ -43,6 +45,7 @@ public:
 	static void refresh();
 	static void print(std::string); 
 	static void push(std::string, bool wrap=true);
+	static void stash();
 	static void clear();
 	static void pophead();
 	static void poptail();
