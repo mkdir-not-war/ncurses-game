@@ -19,6 +19,8 @@
 // maybe move this to a "magicconstants" header
 #define MAGICCHAR	'*'
 
+#define HIGHLIGHTCOLOR	COLOR_BLACK_ON_RED
+
 class GameMap {
 
 struct PropMap {
@@ -61,8 +63,13 @@ private:
 	*/
 	Actor& _player; 
 
+	// used for highlighting in the hud
+	int _actor_highlight;
+
+	// map gen
 	void genPerlin(const unsigned int&);
 
+	// helper functions
 	void removeDeadActors();
 
 public:
@@ -88,14 +95,19 @@ public:
 
 	bool getWorldCoord(int, int, int&, int&);
 
+	int actor_highlight() const;
+
 	Prop* getProp(int, int) const;
 	Prop* setProp(int, int, Prop*);
 	Actor* getActor(int, int) const;
+	Actor* getActor(int, int, int&);
 	bool getMagic(int, int) const;
 	bool setMagic(int, int, bool);
 
+	void highlightActor(int);
+	void unhighlight();
 	void updateActors(int);
-	void getEnemies(Actor**, int&);
+	void getEnemies(Actor**, int&, int* highlight=NULL);
 };
 
 #endif

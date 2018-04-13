@@ -44,110 +44,105 @@ void InputHandler::printHelp() {
 	TextConsole::print("Press q to quit the game.");
 }
 
-void InputHandler::handleInput(int ch) {
+bool InputHandler::handleInput(int ch) {
 	MEVENT event;
-	do {
-		// if invalid input, get new input
-		if (_try_again) {
-			TextConsole::refresh();
-			ch = getch();
+
+	// assume this input will be valid
+	_try_again = false;
+
+	// check to leave the game no matter the state
+	if (ch == 'q' || ch == 'Q') {
+		exit(0);
+	}
+
+	// check states to determine input response
+	if (_help) {
+		if (ch == 'h' || ch == 'H') {
+			TextConsole::unstash();
+			_help = false;
+			_try_again = true; // help costs no turns
 		}
-
-		// assume this input will be valid
-		_try_again = false;
-
-		// check to leave the game no matter the state
-		if (ch == 'q' || ch == 'Q') {
-			exit(0);
+		else {
+			_try_again = true;
 		}
-
-		// check states to determine input response
-		if (_help) {
-			if (ch == 'h' || ch == 'H') {
-				TextConsole::unstash();
-				_help = false;
-				_try_again = true; // help costs no turns
+	}
+	else {
+		if (_confirm_input) {
+			if (ch == 'y' || ch == 'Y') {
+				_confirm_tile->confirm();
+				_confirm_input = false;
+				_key_mouse_left->execute(meventx, meventy);
+			}
+			else if (ch == 'n' || ch == 'N') {
+				_confirm_tile->confirm();
+				_confirm_input = false;
+				_try_again = true;
 			}
 			else {
 				_try_again = true;
 			}
 		}
 		else {
-			if (_confirm_input) {
-				if (ch == 'y' || ch == 'Y') {
-					_confirm_tile->confirm();
-					_confirm_input = false;
-					_key_mouse_left->execute(meventx, meventy);
-				}
-				else if (ch == 'n' || ch == 'N') {
-					_confirm_tile->confirm();
-					_confirm_input = false;
-					_try_again = true;
-				}
-				else {
-					_try_again = true;
-				}
+			if (ch == KEY_LEFT) {
+				_key_left->execute();
 			}
-			else {
-				if (ch == KEY_LEFT) {
-					_key_left->execute();
-				}
-				else if (ch == KEY_RIGHT) {
-					_key_right->execute();
-				}
-				else if (ch == KEY_UP) {
-					_key_up->execute();
-				}
-				else if (ch == KEY_DOWN) {
-					_key_down->execute();
-				}
-				else if (ch == KEY_MOUSE) {
-					if (getmouse(&event) == OK) {
-						if (event.bstate & BUTTON1_PRESSED) {
-							// will return true if outside map
-							_confirm_input = _confirm_tile->execute(
-								event.x, event.y);
-							// save the input state for casting magic 
-							// if confirmed on next input
-							meventx = event.x;
-							meventy = event.y;
-							// checking input costs no turns
-							_try_again = true; 
-						}
-						else if (event.bstate & BUTTON3_PRESSED) {
-							// this command requires x and y coordinates
-							_key_mouse_right->execute(event.x, event.y);
-							// describing a space costs no turns
-							_try_again = true;
-						}
-						else // some other mouse event happened
-						{
+			else if (ch == KEY_RIGHT) {
+				_key_right->execute();
+			}
+			else if (ch == KEY_UP) {
+				_key_up->execute();
+			}
+			else if (ch == KEY_DOWN) {
+				_key_down->execute();
+			}
+			else if (ch == KEY_MOUSE) {
+				if (getmouse(&event) == OK) {
+					if (event.bstate & BUTTON1_PRESSED) {
+						// will return true if outside map
+						_confirm_input = _confirm_tile->execute(
+							event.x, event.y);
+						// save the input state for casting magic 
+						// if confirmed on next input
+						meventx = event.x;
+						meventy = event.y;
+						// checking input costs no turns
+						_try_again = true; 
+					}
+					else if (event.bstate & BUTTON3_PRESSED) {
+						// this command requires x and y coordinates
+						_key_mouse_right->execute(event.x, event.y);
+						// describing a space costs no turns
+						_try_again = true;
+					}
+					else // some other mouse event happened
+					{
 
-						}
 					}
 				}
-				else if (ch == KEY_HOME) {
-					//_key_home->execute();
-					TextConsole::print("poop");
-				}
-				else if (ch == KEY_END) {
-					//_key_end->execute();
-					TextConsole::pop();
-				}
-				else if (ch == KEY_IC) {
-					TextConsole::clear();
-				}
-				else if (ch == 'h' || ch == 'H') {
-					printHelp();
-					_help = true;
-					_try_again = true; // help costs no turns
-				}
-				else {
-					TextConsole::print(std::to_string(ch));
-					_try_again = true;
-				}
+			}
+			else if (ch == KEY_HOME) {
+				//_key_home->execute();
+				TextConsole::print("poop");
+			}
+			else if (ch == KEY_END) {
+				//_key_end->execute();
+				TextConsole::pop();
+			}
+			else if (ch == KEY_IC) {
+				TextConsole::clear();
+			}
+			else if (ch == 'h' || ch == 'H') {
+				printHelp();
+				_help = true;
+				_try_again = true; // help costs no turns
+			}
+			else {
+				TextConsole::print(std::to_string(ch));
+				_try_again = true;
 			}
 		}
-	} while (_try_again);
+	}
+
+	return _try_again;
 }
 

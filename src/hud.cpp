@@ -68,7 +68,7 @@ void HUD::refresh() {
 		str.size(),
 		1, 0);
 
-	str = "|";
+	str = "| ";
 	for (int i=0; i<MAXENEMIES+1; i++) {
 		_actorshudframe->add(
 		str.c_str(),
@@ -81,17 +81,26 @@ void HUD::refresh() {
 	// maybe uniquely color code?
 	int len = 0;
 	Actor* enemies[MAXENEMIES];
-	_map.getEnemies(enemies, len);
+	int highlight = -1;
+	_map.getEnemies(enemies, len, &highlight);
 
 	for (int i=0; i<len; i++) {
-		snprintf(buff, sizeof(buff), "| ENEMY #%d: %d", 
+		snprintf(buff, sizeof(buff), "ENEMY #%d: %d", 
 			i+1,
 			enemies[i]->health());
 		str = buff;
+
+		// if an enemy was described, update the hud color
+		int color = COLOR_WHITE_ON_BLACK;
+		if (i == highlight) {
+			color = HIGHLIGHTCOLOR;
+		}
+
 		_actorshudframe->add(
 			str.c_str(),
 			str.size(),
-			i+3, 0);
+			i+3, 2,
+			color);
 	}
 
 	// refresh the frames

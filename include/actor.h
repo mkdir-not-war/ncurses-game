@@ -3,6 +3,7 @@
 
 #include <string>
 #include <textconsole.h>
+#include <config.h>
 
 #define MAXHEALTH	20
 #define MAXHUNGER	100
@@ -19,6 +20,7 @@ private:
 	int _row, _col;
 	char _symbol;
 	std::string _description;
+	int _color;
 
 	// state information
 	bool _alive;
@@ -34,7 +36,8 @@ public:
 	Actor();
 	Actor(char, int, int, std::string desc="Basic Actor",
 		char resist=UNUSEDCHAR, char weak=UNUSEDCHAR,
-		int numkeys=0, bool hostile=false);
+		int numkeys=0, bool hostile=false, 
+		int color=COLOR_WHITE_ON_BLACK);
 
 	void moveto(int, int);
 
@@ -54,6 +57,7 @@ public:
 	int hunger() const;
 	int smallkeys() const;
 	bool hostile() const;
+	int color() const;
 };
 
 #endif

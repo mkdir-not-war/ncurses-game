@@ -34,15 +34,19 @@ void Frame::fclear() {
 	wclear(_w);
 }
 
-void Frame::add(char ch, int row, int col) {
+void Frame::add(char ch, int row, int col, int color) {
 	if ((row>=0 && row<_height) && (col>=0 && col<_width)) {
+		wattron(_w, COLOR_PAIR(color));
 		mvwaddch(_w, row, col, ch);
+		wattroff(_w, COLOR_PAIR(color));
 	}
 }
 
-void Frame::add(const char* str, int length, int row, int col) {
+void Frame::add(const char* str, int length, 
+	int row, int col,
+	int color) {
 	for (int i = 0; i<length; i++) {
-		add(str[i], row, col+i);
+		add(str[i], row, col+i, color);
 	}
 }
 

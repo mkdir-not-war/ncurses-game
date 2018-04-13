@@ -30,8 +30,10 @@ public:
 
 	void erase(int, int);
 	void fclear();
-	void add(char, int, int);
-	void add(const char*, int, int, int);
+	void add(char, int, int, 
+		int color=COLOR_WHITE_ON_BLACK);
+	void add(const char*, int, int, int,
+		int color=COLOR_WHITE_ON_BLACK);
 	void center(int, int);
 	void refresh();
 	void move(int, int);

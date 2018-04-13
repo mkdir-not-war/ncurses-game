@@ -23,6 +23,8 @@ GameMap::GameMap(Frame& mapframe, Frame& viewport, Actor& player) :
 			_mapmagic.magic[j*MAPWIDTH + i] = false;
 		}
 	}
+
+	_actor_highlight = -1;
 }
 
 GameMap::~GameMap() {
@@ -54,7 +56,7 @@ void GameMap::refresh() {
 				_mapframe.add(MAGICCHAR, i, j);
 			}
 			else {
-				_mapframe.add(p->symbol(), i, j);
+				_mapframe.add(p->symbol(), i, j, p->color());
 			}
 		}
 	}
@@ -62,14 +64,19 @@ void GameMap::refresh() {
 	// next, for each actor in gamemap,
 	// add the actor to the mapframe
 	for (int i=0; i<_mapactors.len; i++) {
+		int color = -1;
+		if (i != _actor_highlight) {
+			color = _mapactors.actors[i]->color();
+		}
+		else {
+			color = HIGHLIGHTCOLOR;
+		}
 		_mapframe.add(
 			_mapactors.actors[i]->symbol(), 
 			_mapactors.actors[i]->row(), 
-			_mapactors.actors[i]->col());
+			_mapactors.actors[i]->col(),
+			color);
 	}	
-
-	// add the player
-	_mapframe.add(_player.symbol(), _player.row(), _player.col());
 
 	// center and refresh the viewport
 	_viewport.center(_player.row(), _player.col());
@@ -77,8 +84,15 @@ void GameMap::refresh() {
 }
 
 void GameMap::loadMap() {
+
+	// remove any highlights that were previously present
+	unhighlight();
+
+	// generate the map
 	genPerlin(257);
 	//_mapframe.fillwindow();
+
+	// add the player
 	addActor(_player, _player.row(), _player.col());
 
 	// debugging with dummy enemies
@@ -217,6 +231,21 @@ Actor* GameMap::getActor(int row, int col) const {
 	return NULL;
 }
 
+Actor* GameMap::getActor(int row, int col, int& actorid) {
+	for (int i=0; i<_mapactors.len; i++) {
+		if (_mapactors.actors[i]->row() == row &&
+			_mapactors.actors[i]->col() == col) {
+			actorid = i;
+			return _mapactors.actors[i];
+		}
+	}
+	return NULL;
+}
+
+int GameMap::actor_highlight() const {
+	return _actor_highlight;
+}
+
 bool GameMap::getMagic(int row, int col) const {
 	return _mapmagic.magic[row*MAPWIDTH + col];
 }
@@ -263,17 +292,25 @@ void GameMap::removeDeadActors() {
 	}
 }
 
+void GameMap::highlightActor(int actorid) {
+	_actor_highlight = actorid;
+}
+
+void GameMap::unhighlight() {
+	highlightActor(-1);
+}
+
 void GameMap::updateActors(int turn) {
 	// do AI here?
 
 	// decrement hunger
 	if (turn % 4 == 0) {
-		for (int i=1; i<_mapactors.len; i++) {
+		for (int i=0; i<_mapactors.len; i++) {
 			_mapactors.actors[i]->decHunger(1);
 		}
 
 		if (_player.hunger() == 50) {
-		TextConsole::print("The hero's stomach grumbles...");
+			TextConsole::print("The hero's stomach grumbles...");
 		}
 		else if (_player.hunger() == 20) {
 			TextConsole::print("The hero's is starving!");
@@ -287,17 +324,24 @@ void GameMap::updateActors(int turn) {
 	removeDeadActors();
 }
 
-void GameMap::getEnemies(Actor** enemies, int& len) {
+void GameMap::getEnemies(Actor** enemies, 
+	int& len,
+	int* highlight) {
 	// never more than 6 enemies, pls,
 	// or else won't be able to display them all
 
 	int num = 0;
+	int hnum = -1;
 
 	for (int i=0; i<_mapactors.len; i++) {
 		if (_mapactors.actors[i]->hostile()) {
+			if (i == _actor_highlight) {
+				hnum = num;
+			}
 			enemies[num++] = _mapactors.actors[i];
 		}
 	}
 
+	*highlight = hnum;
 	len = num;
 }

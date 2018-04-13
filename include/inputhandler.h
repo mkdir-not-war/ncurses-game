@@ -21,7 +21,7 @@ public:
 	// get player actor and frame
 	InputHandler(Actor&, GameMap&, MagicHandler&);
 	~InputHandler();
-	void handleInput(int);
+	bool handleInput(int);
 	void printHelp();
 
 private:

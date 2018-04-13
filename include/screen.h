@@ -2,6 +2,7 @@
 #define SCREEN_H_327859
 
 #include <config.h>
+#include <assert.h>
 
 class Screen {
 private:

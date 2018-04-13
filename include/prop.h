@@ -2,6 +2,7 @@
 #define PROP_H_327859asdf
 
 #include <string>
+#include <config.h>
 
 class Prop {
 private:
@@ -9,10 +10,13 @@ private:
 	char _symbol;
 	bool _permeable;
 	std::string _description;
+	int _color;
 
 public:
 	Prop();
-	Prop(char, bool permeable=true, std::string desc="an empty tile");
+	Prop(char, bool permeable=true, 
+		std::string desc="an empty tile",
+		int _color=COLOR_WHITE_ON_BLACK);
 
 	// probably not going to be used unless dynamic prop
 	/*
@@ -24,6 +28,7 @@ public:
 	// this is used for display
 	char symbol() const;
 	std::string description() const;
+	int color() const;
 
 	// state variables 
 	bool permeable() const;

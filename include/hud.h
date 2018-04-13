@@ -8,6 +8,7 @@
 #include "frame.h"
 #include "actor.h"
 #include "gamemap.h"
+#include "config.h"
 
 #include "textconsole.h"
 

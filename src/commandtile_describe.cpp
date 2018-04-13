@@ -15,7 +15,12 @@ bool CommandTile_Describe::execute(int x, int y) {
 	const char* pdesc;
 	const char* adesc;
 	if (prop) {
-		Actor* actor = _map.getActor(row, col);
+		// get ready to highlight an actor 
+		int actorid = -1;
+		_map.unhighlight();
+
+		// get whatever is on the prop
+		Actor* actor = _map.getActor(row, col, actorid);
 		bool magic = _map.getMagic(row, col);
 
 		// putting this in an else statement fucks it up. idk
@@ -23,19 +28,21 @@ bool CommandTile_Describe::execute(int x, int y) {
 		adesc = ad.c_str();
 		if (actor) {
 			adesc = actor->description().c_str();
+			_map.highlightActor(actorid);
 		}
 		else if (magic) {
 			adesc = "Lingering magic";
 		}
 
 		pdesc = prop->description().c_str();
-		
+
 		char buff[TEXTLOG_WORD_BUFFERSIZE*2];
 		snprintf(buff, sizeof(buff), "%s is on the %s @ <%d, %d>", 
 			adesc, pdesc, row, col);
 		std::string s = buff;
 
 		TextConsole::print(s);
+
 		return false;
 	}
 	else {

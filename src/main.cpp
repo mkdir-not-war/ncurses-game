@@ -19,6 +19,14 @@ void update(Actor& player, GameMap& map, int& turn) {
 	}
 }
 
+void draw(GameMap& map, 
+	TextConsole& console,
+	HUD& hud) {
+	map.refresh();
+	console.refresh();
+	hud.refresh();
+}
+
 void game_loop(GameMap& map, 
 	TextConsole& console,
 	InputHandler& input,
@@ -36,15 +44,15 @@ void game_loop(GameMap& map,
 		ch = getch();
 		if (ch == 'q' || ch == 'Q' || ch == KEY_RESIZE) exit(0);
 
-		input.handleInput(ch);
+		bool try_again = input.handleInput(ch);
 
 		// update game 
-		update(player, map, turn);
+		if (!try_again) {
+			update(player, map, turn);
+		}
 
 		// render game
-		map.refresh();
-		console.refresh();
-		hud.refresh();
+		draw(map, console, hud);
 	}
 }
 
